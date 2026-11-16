@@ -600,7 +600,7 @@ button.refpage:hover{border-color:var(--accent)}
     </section>
 
     <section class="panel" id="p-prod">
-      <div class="ph"><div class="ic" data-icon="clap"></div><div><h2>ایده‌های ساخت</h2><p>بعد از تأیید کارفرما: پیش‌تولید، استوری‌بورد، تولید</p></div>
+      <div class="ph"><div class="ic" data-icon="clap"></div><div><h2>ایده‌های ساخت</h2><p>بعد از تأیید، خودکار و به ترتیب تأیید: پیش‌تولید، استوری‌بورد، تولید</p></div>
         <span class="pill agent"><span class="dot"></span><span class="agent-text">آماده</span></span></div>
       <div class="nowline" hidden></div>
       <div class="pb">
@@ -1043,12 +1043,13 @@ const ic = (name, extra) => el("span", {class: "i" + (extra ? " " + extra : ""),
 const HEX = /^#[0-9a-f]{3,8}$/i;
 const color = (c, d) => (typeof c === "string" && HEX.test(c.trim())) ? c.trim() : d;
 const safeImg = u => typeof u === "string" && (/^https:\/\/([\w-]+\.)*(cdninstagram\.com|fbcdn\.net|ytimg\.com|ggpht\.com|googleusercontent\.com|tiktokcdn\.com|tiktokcdn-us\.com|licdn\.com)\//.test(u) || /^\/ws\//.test(u) || /^data:image\/(png|jpeg|webp|svg\+xml);base64,/.test(u)) ? u : null;
+const wsLink = u => typeof u === "string" && /^\/ws\/[^:]*$/.test(u) ? u : null;   // a file inside the work folder (local dashboard)
 const safeLink = u => typeof u === "string" && (/^https:\/\/((www|m)\.)?(instagram\.com|youtube\.com|youtu\.be|tiktok\.com|lnkd\.in)\//.test(u) || /^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//.test(u)) ? u : null;
 
 /* ---------- state ---------- */
 const D = {rev: "", page: {}, board: {ideas: [], scan: {}}, decisions: {ideas: {}, storyboards: {}}, demo: false, platform: "", platforms: {}, inbox: []};
 const L = {next: 0, log: [], ready: false, active: {page: 0, scout: 0, qc: 0, client: 0, prod: 0}, now: {}};
-const UI = {open: null, tab: "qc", note: "", busy: new Set(), loaded: false};
+const UI = {open: null, tab: "qc", note: "", rev: null, busy: new Set(), loaded: false};
 
 /* ---------- platform (Instagram / YouTube / LinkedIn): same flow, its own ideas ---------- */
 const PLATS = {
@@ -1629,7 +1630,14 @@ function renderQC(animate) {
 /* ---------- column C: production board ---------- */
 const TRACK = [["approved", "تأیید"], ["preprod", "پیش‌تولید"], ["storyboard", "استوری‌بورد"], ["production", "تولید"]];
 const TRACK_IDX = {approved: 1, preprod: 2, storyboard: 3, production: 4, done: 5};
-function buildPC(i, rank) {
+/* build queue: approved ideas are built automatically, in the order the client approved them */
+function buildQueue() {
+  const needMotion = i => stageOf(i) === "production" && prodKind(i) === "motion" && !i.motion;
+  const wait = D.board.ideas.filter(i => { const st = stageOf(i); return st === "approved" || st === "preprod" || (st === "storyboard" && sbd(i).status === "revise") || needMotion(i); });
+  const at = i => (sbd(i).status === "revise" || needMotion(i) ? sbd(i).at : dec(i).at) || "";
+  return new Map(wait.sort((a, b) => at(a).localeCompare(at(b))).map((i, n) => [i.id, n + 1]));
+}
+function buildPC(i, rank, turn) {
   const st = stageOf(i), sb = sbd(i);
   const idx = TRACK_IDX[st] ?? 0;
   const waitSb = st === "storyboard" && sb.status !== "revise";
@@ -1641,7 +1649,10 @@ function buildPC(i, rank) {
     el("span", {class: "mini" + (i.storyboard ? " ready" : "")}, ic("board"), i.storyboard ? `استوری‌بورد · ${fa((i.storyboard.frames || []).length)} فریم` : "استوری‌بورد…"),
     waitSb ? el("span", {class: "mini need"}, ic("clock"), "منتظر تأیید استوری‌بورد") : null,
     sb.status === "revise" ? el("span", {class: "mini need"}, ic("pencil"), "در حال اصلاح") : null,
-    st === "production" ? el("span", {class: "mini ok"}, ic("film"), "در تولید") : null,
+    turn ? el("span", {class: "mini need", title: "بعد از تأیید، Claude خودش به ترتیب تأیید پیش‌تولید و استوری‌بورد را می‌سازد"}, ic("clock"), turn === 1 ? "نوبت ساخت: اول" : `نوبت ساخت: ${fa(turn)}`) : null,
+    st === "production" && prodKind(i) !== "motion" ? el("span", {class: "mini ok"}, ic("film"), "آماده‌ی ضبط ویدئو") : null,
+    st === "production" && prodKind(i) === "motion" ? el("span", {class: "mini need"}, ic("film"), "ساخت موشن…") : null,
+    st === "done" && i.motion && wsLink(i.motion.file) ? el("a", {class: "mini ok", href: wsLink(i.motion.file), target: "_blank", rel: "noopener", onclick: e => e.stopPropagation()}, ic("film"), "دیدن موشن") : null,
     st === "done" ? el("span", {class: "mini ok"}, ic("check"), "ساخته شد") : null);
   card.append(el("div", {class: "pc-t"}, prodTitle(i)),
     el("div", {class: "pc-o"}, usesAlt(i) ? el("span", {class: "tagalt"}, "جایگزین") : null, el("span", null, `از ایده‌ی #${fa(rank)} · ${i.source_page || ""}`)),
@@ -1650,15 +1661,16 @@ function buildPC(i, rank) {
 }
 function renderProd(animate) {
   const ranks = new Map(sortedIdeas().map((i, n) => [i.id, n + 1]));
-  const appr = D.board.ideas.filter(approved);
+  const appr = D.board.ideas.filter(approved).sort((a, b) => (dec(a).at || "").localeCompare(dec(b).at || ""));
+  const turns = buildQueue();
   for (const [laneId, kind] of [["laneMotion", "motion"], ["laneFilmed", "filmed"]]) {
     const lane = $(laneId);
     const items = appr.filter(i => (prodKind(i) || "filmed") === kind);
     lane.querySelector(".cnt").textContent = fa(items.length);
     lane.hidden = !appr.length;
     keyed(lane.querySelector(".lane-body"), items, i => i.id,
-      i => JSON.stringify([prodTitle(i), stageOf(i), sbd(i).status, !!i.preprod, (i.storyboard || {}).version, ranks.get(i.id)]),
-      i => buildPC(i, ranks.get(i.id)), animate);
+      i => JSON.stringify([prodTitle(i), stageOf(i), sbd(i).status, !!i.preprod, (i.storyboard || {}).version, ranks.get(i.id), turns.get(i.id), !!i.motion, !!i.done]),
+      i => buildPC(i, ranks.get(i.id), turns.get(i.id)), animate);
   }
   $("prodEmpty").hidden = appr.length > 0;
   const gone = D.board.ideas.filter(i => dec(i).status === "deleted");
@@ -1731,7 +1743,7 @@ function waitBox(icon, text) {
 const GROUPS = [["people", "آدم‌ها", "user"], ["location", "لوکیشن", "pin"], ["equipment", "تجهیزات", "camera"], ["props", "وسایل صحنه", "box"], ["software", "نرم‌افزار و ابزار AI", "laptop"], ["assets", "فایل‌ها و المان‌ها", "folder"]];
 function panePre(i) {
   const p = i.preprod;
-  if (!approved(i) && !p) return waitBox("doc", "سند پیش‌تولید بعد از تأیید کارفرما ساخته می‌شه.");
+  if (!approved(i) && !p) return waitBox("doc", "سند پیش‌تولید بعد از تأیید کارفرما خودکار ساخته می‌شه.");
   if (!p) return waitBox("doc", "Claude سند پیش‌تولید رو آماده می‌کنه.");
   const kind = p.kind || prodKind(i);
   return el("div", {class: "pane"},
@@ -1754,7 +1766,7 @@ function panePre(i) {
 }
 function paneSB(i) {
   const sb = i.storyboard;
-  if (!approved(i) && !sb) return waitBox("board", "استوری‌بورد بعد از تأیید کارفرما طراحی می‌شه.");
+  if (!approved(i) && !sb) return waitBox("board", "استوری‌بورد بعد از تأیید کارفرما خودکار طراحی می‌شه.");
   if (!sb) return waitBox("board", "Claude استوری‌بورد رو طراحی می‌کنه.");
   const pal = (sb.palette && sb.palette.length ? sb.palette : null) || (D.page.visual || {}).palette || [];
   const frames = sb.frames || [];
@@ -1782,17 +1794,23 @@ function sbFooter(i) {
   if (!sb || !approved(i)) return null;
   const f = el("div", {class: "df"});
   if (d.status === "approved") {
-    f.append(el("span", {class: "status ok"}, ic("film"), "استوری‌بورد تأیید شد ← مرحله‌ی تولید"),
+    f.append(el("span", {class: "status ok"}, ic("film"), prodKind(i) === "motion" ? (i.motion ? "موشن ساخته شد ✓" : "استوری‌بورد تأیید شد ← Claude خودش موشن رو می‌سازه") : "استوری‌بورد تأیید شد ← آماده‌ی ضبط ویدئو"),
       el("button", {class: "btn ghost", disabled: busy, onclick: () => storyboard(i, "reset")}, ic("undo"), "برداشتن تأیید"));
   } else if (d.status === "revise") {
-    f.append(el("span", {class: "status warn"}, ic("pencil"), "منتظر نسخه‌ی اصلاح‌شده"), d.note ? el("span", {style: "font-size:.8rem;color:var(--muted)"}, "یادداشت: " + d.note) : null,
+    f.append(el("span", {class: "status warn"}, ic("pencil"), "Claude داره طبق کامنتت استوری‌بورد تازه می‌سازه"), d.note ? el("span", {style: "font-size:.8rem;color:var(--muted)"}, "کامنت: " + d.note) : null,
       el("button", {class: "btn ghost", disabled: busy, onclick: () => storyboard(i, "reset")}, ic("undo"), "لغو"));
-  } else {
-    const ta = el("textarea", {placeholder: "یادداشت کارفرما برای اصلاح (اختیاری)…", oninput: e => UI.note = e.target.value});
+  } else if (UI.rev === i.id) {   // "needs changes" opens a comment box; Claude builds the next storyboard from this comment
+    const send = el("button", {class: "btn del", disabled: busy || !UI.note.trim(), onclick: () => { UI.rev = null; storyboard(i, "revise", UI.note.trim()); }}, ic("pencil"), "بفرست برای اصلاح");
+    const ta = el("textarea", {placeholder: "چی باید عوض بشه؟ مثلاً «فریم ۳ شلوغه، هوک کوتاه‌تر، رنگ‌ها ملایم‌تر»…",
+      oninput: e => { UI.note = e.target.value; send.disabled = busy || !UI.note.trim(); }});
     ta.value = UI.note;
-    f.append(ta,
-      el("button", {class: "btn del", disabled: busy, onclick: () => storyboard(i, "revise", UI.note)}, ic("pencil"), "نیاز به اصلاح"),
-      el("button", {class: "btn grad", disabled: busy, onclick: () => storyboard(i, "approve")}, ic("check"), "تأیید استوری‌بورد ← تولید"));
+    f.append(el("b", {style: "font-size:.85rem"}, "کامنتت برای استوری‌بورد"), ta, send,
+      el("button", {class: "btn ghost", disabled: busy, onclick: () => { UI.rev = null; $("drawer")._sig = null; renderDrawer(); }}, ic("undo"), "انصراف"));
+    setTimeout(() => ta.focus(), 0);
+  } else {
+    f.append(el("button", {class: "btn del", disabled: busy, onclick: () => { UI.rev = i.id; $("drawer")._sig = null; renderDrawer(); }}, ic("pencil"), "نیاز به اصلاح"),
+      el("button", {class: "btn grad", disabled: busy, onclick: () => storyboard(i, "approve")}, ic("check"),
+        prodKind(i) === "motion" ? "تأیید استوری‌بورد ← ساخت موشن" : "تأیید استوری‌بورد ← ضبط ویدئو"));
   }
   return f;
 }

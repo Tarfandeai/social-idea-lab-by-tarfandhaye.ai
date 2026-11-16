@@ -7,13 +7,13 @@ from pathlib import Path
 
 NAME = "Social Idea Lab by Tarfandhaye.ai"
 OWNER = "Tarfandhaye.ai"
-VERSION = "2.0.6"
+VERSION = "2.1.1"
 HEADER = "Social Idea Lab by Tarfandhaye.ai — © 2026 Tarfandhaye.ai — All rights reserved. Personal use only; see LICENSE.md."
 NOTICE_FA = "© ۱۴۰۵ Tarfandhaye.ai — همه‌ی حقوق محفوظ است. فقط برای استفاده‌ی شخصی."
 COPY = "© tarfandhaye.ai"  # the page's copyright, shown everywhere on the dashboard and in every document
 LICENSE_SHA256 = "cbbbbdefb1b1fdf62f61a7283a7fd08b2f9aff41a44261017eafb21b6d7a9319"  # set by dev/build.py when the release zip is built; empty = development copy
 LOGO_SHA256 = "0492e4515772337d1d4a096216b4852b6b0ee25e4d0726c9e8022c7221dcb21c"  # set by dev/build.py
-FILES_SHA256 = "ae501ee2fdbf0c0a7d393a58e7e980b9a51c22fb4e23b7dea09af1ee7bca1709"  # set by dev/build.py: every shipped file of the skill
+FILES_SHA256 = "d227f78c5c6c47e965c70413d1122f486c50cf50c08a305c0c2a92e86d0ba1c0"  # set by dev/build.py: every shipped file of the skill
 
 SKILL_ROOT = Path(__file__).resolve().parents[2]
 

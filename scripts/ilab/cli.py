@@ -15,7 +15,7 @@ from .apply import DECISION_FA, KIND_FA, VERDICT_FA, ev, ws_url
 
 OUT = []
 STAGE_FA = {"candidate": "کاندید", "qc": "QC شد، منتظر کارفرما", "approved": "تأیید شد ← پیش‌تولید", "preprod": "پیش‌تولید آماده ← استوری‌بورد",
-            "storyboard": "استوری‌بورد منتظر تأیید", "production": "در تولید", "done": "ساخته شد", "deleted": "حذف شد"}
+            "storyboard": "استوری‌بورد منتظر تأیید", "production": "در تولید (ضبط ویدئو) / ساخت موشن", "done": "ساخته شد", "deleted": "حذف شد"}
 
 HELP = """
 فرمان‌ها (RUN = python "<SKILL_DIR>/scripts/run.py"):
@@ -23,6 +23,10 @@ HELP = """
   brands | brand add "اسم" [--link URL] [--youtube URL] [--linkedin URL] [--niche ..] | brand use ID    چند برند (هر کدام جدا)
   brand remove ID                   برداشتن برند از فهرست (فقط وقتی کاربر خواست؛ پاک نمی‌شه: bNN بایگانی، main فقط پنهان)
   requests                          صف «بنچ‌مارک جدید» که از دکمه‌ی داشبورد آمده
+  queue [--json]                    صف ساخت: ایده‌های تأییدشده به ترتیب تأیید ← پیش‌تولید و استوری‌بورد (همه‌ی برندها و پلتفرم‌ها)
+  motion-tools [--json]             چه چیزی برای ساخت موشن نصب است و چه چیزی کم است (با فرمان نصب)
+  motion ID --file V.mp4            ثبت موشنی که از روی استوری‌بورد تأییدشده ساخته شد (ایده تمام می‌شود)
+  watch [--every 5] [--timeout 120] منتظر تأیید تازه‌ی کارفرما می‌ماند و صف ساخت را چاپ می‌کند (در پس‌زمینه اجرا کن)
   bench request|start|done|cancel [--brand ID]   ثبت یا جلو بردن بنچ‌مارک یک برند
   init [--work DIR]                 ساخت پوشه‌ی کار و فایل پیج رفرنس (page.json)
   use [instagram|youtube|linkedin]  نمایش یا انتخاب پلتفرم (همان سوییچ بالای داشبورد)
@@ -382,6 +386,70 @@ def cmd_done(ws, a):
     say(f"✅ {idea['id']} ساخته شد.")
 
 
+MOTION_SKILL = "hyperframes"   # what Claude uses to build motion: HyperFrames by HeyGen (HTML rendered to video)
+MOTION_INSTALL = "npx -y skills add heygen-com/hyperframes --skill '*' -g -a claude-code -y"
+
+
+def motion_tools():
+    """what motion building needs on this computer: the HyperFrames skills, Node.js (npx) and FFmpeg"""
+    skills = Path.home() / ".claude" / "skills"
+    have_hf = (skills / MOTION_SKILL / "SKILL.md").is_file()
+    have_rm = any(skills.glob("remotion*/SKILL.md"))
+    node_ok = False
+    if shutil.which("node") and shutil.which("npx"):   # the skills installer needs Node.js 22.20 or later
+        try:
+            v = subprocess.run(["node", "--version"], capture_output=True, text=True, timeout=15).stdout.strip().lstrip("v").split(".")
+            node_ok = (int(v[0]), int(v[1])) >= (22, 20)
+        except (OSError, ValueError, IndexError, subprocess.SubprocessError):
+            node_ok = False
+    return {"hyperframes": have_hf, "remotion": have_rm, "node": node_ok,
+            "ffmpeg": bool(shutil.which("ffmpeg")), "skills_dir": str(skills)}
+
+
+def cmd_motion_tools(ws, a):
+    t = motion_tools()
+    if a.json:
+        say(json.dumps(t, ensure_ascii=False))
+        return 0
+    mark = lambda ok: "✓" if ok else "✗"
+    say(f"{mark(t['hyperframes'])} اسکیل HyperFrames   {mark(t['node'])} Node.js ۲۲.۲۰+ (npx)   {mark(t['ffmpeg'])} FFmpeg")
+    win = sys.platform.startswith("win")
+    need = []
+    if not t["node"]:
+        need.append(("Node.js", "winget install -e --id OpenJS.NodeJS.LTS" if win else "brew install node   (لینوکس: مدیر بسته‌ی سیستم)"))
+    if not t["ffmpeg"]:
+        need.append(("FFmpeg", "winget install -e --id Gyan.FFmpeg" if win else "brew install ffmpeg   (لینوکس: مدیر بسته‌ی سیستم)"))
+    if not t["hyperframes"]:
+        need.append(("اسکیل HyperFrames (ساخت موشن)", MOTION_INSTALL))
+    if not need:
+        say(f"✅ برای ساخت موشن همه‌چیز آماده است. راهنمای اسکیل: {Path(t['skills_dir']) / MOTION_SKILL / 'SKILL.md'}")
+        return 0
+    say("برای ساخت موشن این‌ها کم است. کاربر کاری با نصب ندارد: **یک بار** با یک جمله‌ی ساده اجازه بگیر، بعد خودت به همین ترتیب نصب کن:")
+    for name, cmd in need:
+        say(f"  • {name}:  {cmd}")
+    say("بعد از نصب دوباره `motion-tools` بزن. اگر اسکیل تازه در فهرست اسکیل‌ها نیامد، فایل SKILL.md آن را مستقیم بخوان و ادامه بده.")
+    return 3
+
+
+def cmd_motion(ws, a):
+    """registers the motion video Claude built from the approved storyboard; the idea is then done"""
+    board = ws.board()
+    idea = store.find_idea(board, a.id)
+    d = ws.decisions()
+    if store.stage_of(idea, d) not in ("production", "done") or store.production_kind(idea, d["ideas"].get(idea["id"])) != "motion":
+        raise SystemExit("⛔ موشن فقط برای ایده‌ی موشنی است که استوری‌بوردش تأیید شده.")
+    src = Path(a.file)
+    if not src.is_file():
+        raise SystemExit(f"⛔ فایل پیدا نشد: {a.file}")
+    dst = next_version(store.idea_dir(ws, idea), "motion", src.suffix.lower() or ".mp4")
+    shutil.copy2(src, dst)
+    idea["motion"] = {"file": ws_url(ws, dst), "path": str(dst), "at": store.now_iso(), "note": a.note or ""}
+    idea["done"] = store.now_iso()
+    ws.save_board(board)
+    ev(ws, "prod", "motion", f"موشن «{store.production_title(idea, d['ideas'].get(idea['id']))[:40]}» ساخته شد", id=idea["id"])
+    say(f"🎬 {idea['id']}: موشن ثبت شد ← {dst}")
+
+
 def cmd_log(ws, a):
     if a.agent not in store.AGENTS:
         raise SystemExit(f"⛔ AGENT باید یکی از این‌ها باشد: {' '.join(store.AGENTS)}")
@@ -602,6 +670,50 @@ def cmd_requests(ws, a):
     say("برای هر ردیف: `bench start --brand ID --platform P` ← دور جستجو، امتیاز، QC (با همان --brand و --platform؛ پیج‌ها طبق «پیج‌ها») ← `bench done --brand ID --platform P`.")
 
 
+QUEUE_FA = {"preprod": "پیش‌تولید ← استوری‌بورد", "storyboard": "استوری‌بورد", "revise": "استوری‌بورد تازه طبق کامنت کارفرما",
+            "motion": "ساخت موشن (modules/6-motion.md)"}
+
+
+def queue_lines(q):
+    for x in q:
+        when = x["at"][:16].replace("T", " ")
+        yield (f"  {x['n']}. --brand {x['brand']} --platform {x['platform']}  {x['id']}  «{x['title'][:45]}»  ← {QUEUE_FA[x['todo']]}"
+               f"  (تأیید {when})" + (f" — یادداشت کارفرما: {x['note']}" if x.get("note") else ""))
+
+
+def cmd_queue(ws, a):
+    q = store.build_queue(a.lab)
+    if a.json:
+        say(json.dumps(q, ensure_ascii=False, indent=2))
+        return 0
+    if not q:
+        say("صف ساخت خالی است: ایده‌ی تأییدشده‌ای منتظر پیش‌تولید یا استوری‌بورد نیست.")
+        return 0
+    say(f"🛠 صف ساخت ({len(q)} کار، به ترتیب تأیید کارفرما). از اولی شروع کن، بی‌آنکه منتظر کاربر بمانی:")
+    for ln in queue_lines(q):
+        say(ln)
+    say("هر ردیف با همان --brand و --platform: preprod ← storyboard (modules/4 و 5)، اصلاح طبق کامنت (نسخه‌ی تازه‌ی استوری‌بورد)، یا موشن (modules/6-motion.md ← `motion ID --file`)؛ بعد دوباره `queue`.")
+
+
+def cmd_watch(ws, a):
+    """Waits (no tokens spent) until the client approves something on the local dashboard, then prints the build queue and exits.
+    Claude runs it in the background, so it is woken up the moment there is work."""
+    start = time.time()
+    seen = {(x["brand"], x["platform"], x["id"], x["todo"]) for x in store.build_queue(a.lab)} if a.new_only else set()
+    while True:
+        q = [x for x in store.build_queue(a.lab) if (x["brand"], x["platform"], x["id"], x["todo"]) not in seen]
+        if q:
+            say(f"🔔 کار تازه از کارفرما ({len(q)} مورد). صف ساخت به ترتیب تأیید:")
+            for ln in queue_lines(q):
+                say(ln)
+            say("همین حالا، بی‌آنکه از کاربر بپرسی، از ردیف اول شروع کن؛ بعد `queue` و بعد دوباره `watch` در پس‌زمینه.")
+            return 0
+        if a.timeout and time.time() - start > a.timeout * 60:
+            say(f"⏱ {a.timeout} دقیقه تأیید تازه‌ای نیامد. اگر هنوز منتظر کارفرما هستی، دوباره `watch` را در پس‌زمینه بزن.")
+            return 3
+        time.sleep(max(1, a.every))
+
+
 def cmd_bench(ws, a):
     if a.action == "request":
         cur = ws.benchmark_request().get("status")
@@ -705,8 +817,9 @@ HANDLERS = {"init": cmd_init, "doctor": cmd_doctor, "page": cmd_page, "scout": c
             "preprod": cmd_preprod, "storyboard": cmd_storyboard, "status": cmd_status, "decide": cmd_decide, "sb": cmd_sb,
             "done": cmd_done, "log": cmd_log, "dashboard": cmd_dashboard, "demo": cmd_demo, "reset": cmd_reset, "inbox": cmd_inbox,
             "use": cmd_use, "mode": cmd_mode, "brief": cmd_brief, "brands": cmd_brands, "brand": cmd_brand,
-            "requests": cmd_requests, "bench": cmd_bench, "app": cmd_app, "export": cmd_export, "online": cmd_online, "import-pack": cmd_import_pack}
-LAB_COMMANDS = ("init", "dashboard", "app", "demo", "brands", "brand", "requests", "export", "online", "import-pack")
+            "requests": cmd_requests, "bench": cmd_bench, "app": cmd_app, "export": cmd_export, "online": cmd_online, "import-pack": cmd_import_pack,
+            "queue": cmd_queue, "watch": cmd_watch, "motion": cmd_motion, "motion-tools": cmd_motion_tools}
+LAB_COMMANDS = ("init", "dashboard", "app", "demo", "brands", "brand", "requests", "export", "online", "import-pack", "queue", "watch", "motion-tools")
 
 
 def build_parser():
@@ -738,6 +851,18 @@ def build_parser():
     s.add_argument("--linkedin", help="لینک پیج یا پروفایل لینکدین")
     s.add_argument("--niche", help="زمینه‌ی کاری")
     add("requests")
+    s = add("motion")
+    s.add_argument("id")
+    s.add_argument("--file", required=True, help="ویدیوی موشنی که از روی استوری‌بورد ساخته شد")
+    s.add_argument("--note", help="توضیح کوتاه (مثلاً «بدون نریشن»)")
+    s = add("motion-tools")
+    s.add_argument("--json", action="store_true")
+    s = add("queue")
+    s.add_argument("--json", action="store_true")
+    s = add("watch")
+    s.add_argument("--every", type=float, default=5, help="هر چند ثانیه یک بار نگاه کند")
+    s.add_argument("--timeout", type=float, default=120, help="بعد از چند دقیقه بدون تأیید تازه تمام شود (0 = هیچ‌وقت)")
+    s.add_argument("--new-only", action="store_true", help="کارهایی که همین الان در صف هستند را حساب نکن")
     s = add("bench")
     s.add_argument("action", choices=("request", "start", "done", "cancel"))
     s.add_argument("--region", choices=store.REGIONS, help="پیج‌های ایرانی، خارجی یا هر دو (فقط برای request)")

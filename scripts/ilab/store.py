@@ -11,7 +11,7 @@ from pathlib import Path
 
 from . import brand as _brand
 
-BRAND_SHA256 = "193414c9b7e51815c4c795077d78a0174d824e3fe4cea2e081ce23c65ca4794e"  # set by dev/build.py
+BRAND_SHA256 = "2c054718855b8ca12996adc36a4fb01b3bcccf5f94c685912c4478c672941270"  # set by dev/build.py
 if BRAND_SHA256 and (not _brand.LICENSE_SHA256 or _brand.code_digest(Path(__file__).with_name("brand.py")) != BRAND_SHA256):
     raise SystemExit(f"⛔ {_brand.NAME}: فایل‌های اسکیل تغییر کرده‌اند، پس اسکیل اجرا نمی‌شود. نسخه‌ی اصل را از {_brand.OWNER} بگیرید.")
 _brand.check()
@@ -601,6 +601,40 @@ def stage_of(idea, decisions):
     if idea.get("qc"):
         return "qc"
     return "candidate"
+
+
+def build_queue(lab):
+    """Approved ideas still waiting for Claude, across every brand and platform, in the order the client approved them
+    (first approved = first built). A storyboard sent back for changes joins at the time it was sent back."""
+    out = []
+    for b in list_brands(lab) or [{"id": "main", "name": lab.page.get("name") or "برند اصلی", "path": "."}]:
+        if b.get("hidden"):
+            continue
+        for pl in PLATFORMS:
+            w = Workspace((lab.root / b["path"]).resolve(), pl)
+            if not w.board_path.exists():
+                continue
+            board, dec = w.board(), w.decisions()
+            for i in board.get("ideas") or []:
+                st = stage_of(i, dec)
+                d = dec["ideas"].get(i["id"], {})
+                sb = dec["storyboards"].get(i["id"], {})
+                if st == "approved":
+                    todo, at = "preprod", d.get("at")
+                elif st == "preprod":
+                    todo, at = "storyboard", d.get("at")
+                elif st == "storyboard" and sb.get("status") == "revise":
+                    todo, at = "revise", sb.get("at")
+                elif st == "production" and production_kind(i, d) == "motion" and not i.get("motion"):
+                    todo, at = "motion", sb.get("at")   # motion ideas: Claude builds the motion right after the storyboard is approved
+                else:
+                    continue   # filmed ideas: after the storyboard is approved the client films it; Claude's part is done
+                out.append({"brand": b["id"], "brand_name": b.get("name"), "platform": pl, "id": i["id"],
+                            "title": production_title(i, d), "todo": todo, "at": at or "", "note": sb.get("note") if todo == "revise" else None})
+    out.sort(key=lambda x: x["at"])
+    for n, x in enumerate(out, 1):
+        x["n"] = n
+    return out
 
 
 # ---------- events (live log on the dashboard) ----------
