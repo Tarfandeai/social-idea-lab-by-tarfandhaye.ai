@@ -1,0 +1,1970 @@
+<!doctype html>
+<!-- Social Idea Lab by Tarfandhaye.ai — © 2026 Tarfandhaye.ai — All rights reserved. Personal use only; see LICENSE.md. -->
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Idea Lab · © tarfandhaye.ai</title>
+<meta name="theme-color" content="#100914">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Idea Lab">
+<link rel="apple-touch-icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>/* theme before first paint: ?theme= wins, then the viewer's last choice */
+try { var t = new URLSearchParams(location.search).get("theme") || localStorage.getItem("ilab-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+:root{
+  --bg:#100914; --bg-hi:#2A0F2E; --panel:rgba(255,255,255,.035); --panel-hi:rgba(255,255,255,.06); --panel-solid:#1A1020;
+  --line:rgba(255,92,170,.17); --line-soft:rgba(255,255,255,.08);
+  --ink:#F7EFF4; --muted:#C2AAB9; --faint:#806878;
+  --accent:#FF5CAA; --accent-ink:#2A0418; --accent-soft:rgba(255,92,170,.14);
+  --grad:linear-gradient(120deg,#FEDA75 0%,#FA7E1E 26%,#D62976 56%,#962FBF 80%,#4F5BD5 100%);
+  --label:#F5C84B; --label-soft:rgba(245,200,75,.14); --label-ink:#2B2104;
+  --ok:#3DD6B5; --ok-soft:rgba(61,214,181,.14); --warn:#FFB547; --warn-soft:rgba(255,181,71,.14); --bad:#FF5E6C; --bad-soft:rgba(255,94,108,.14);
+  --motion:#AE92FF; --motion-soft:rgba(174,146,255,.15); --filmed:#FF9B6B; --filmed-soft:rgba(255,155,107,.15);
+  --shadow:0 18px 40px -18px rgba(0,0,0,.6);
+  --glow:0 0 0 1px rgba(255,92,170,.4), 0 0 30px -4px rgba(255,92,170,.45);
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F6F1F4; --bg-hi:#F0E2EA; --panel:#FFFFFF; --panel-hi:#FBF7F9; --panel-solid:#FFFFFF;
+  --line:#EBD9E3; --line-soft:#F0E6EB; --ink:#1A1218; --muted:#6B5763; --faint:#A08C98;
+  --accent:#C8247A; --accent-ink:#FFFFFF; --accent-soft:#FBE1EE;
+  --label:#8A5A00; --label-soft:#FFF4D6; --label-ink:#FFFFFF;
+  --ok:#0E9C88; --ok-soft:#D3EFE9; --warn:#B26B00; --warn-soft:#FFEFD6; --bad:#C8372C; --bad-soft:#FBE3DF;
+  --motion:#6A4BD8; --motion-soft:#ECE6FF; --filmed:#C2541E; --filmed-soft:#FFE9DE;
+  --shadow:0 14px 30px -18px rgba(80,30,60,.35); --glow:0 0 0 1px rgba(200,36,122,.35), 0 0 24px -6px rgba(200,36,122,.35);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{font-size:clamp(12.5px, .56vw + 5px, 16.5px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1100px 560px at 88% -12%, var(--bg-hi), transparent 70%),radial-gradient(900px 520px at -5% 110%, var(--bg-hi), transparent 70%)}
+button{font:inherit;color:inherit}
+.num{font-feature-settings:"tnum";font-variant-numeric:tabular-nums}
+.i{display:inline-grid;place-items:center;flex:none}
+.i svg{width:1em;height:1em}
+.app{display:flex;flex-direction:column;gap:.85rem;height:100vh;padding:1rem 1.3rem}
+.app>*{flex:none;min-width:0}
+.app>.cols{flex:1 1 0}
+/* brands row */
+.brow{display:flex;align-items:center;gap:.6rem;min-width:0;padding:.45rem .6rem;border-radius:1rem;background:var(--panel);border:1px solid var(--line-soft)}
+.brow-t{display:inline-flex;align-items:center;gap:.35rem;font-weight:900;font-size:.82rem;color:var(--muted);white-space:nowrap}
+.brow-t .i{font-size:1rem;color:var(--accent)}
+.bchips{display:flex;gap:.4rem;overflow-x:auto;min-width:0;scrollbar-width:thin;scrollbar-color:var(--line) transparent;padding:.1rem}
+.bchip{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .7rem;border-radius:.8rem;border:1px solid var(--line-soft);background:var(--panel-hi);color:var(--ink);font:inherit;font-size:.8rem;font-weight:800;cursor:pointer;white-space:nowrap;flex:none;transition:border-color .2s}
+.bchip:hover{border-color:var(--accent)}
+.bchip small{font-weight:600;color:var(--faint);font-size:.68rem}
+.bchip.on{border-color:transparent;background:linear-gradient(var(--panel-solid),var(--panel-solid)) padding-box,var(--grad) border-box;border:1.5px solid transparent}
+.bchipw{position:relative;display:inline-flex;align-items:center;flex:none}
+.bchipw .bchip{padding-inline-end:1.5rem}
+.bchipw .bx{position:absolute;inset-inline-end:.3rem;top:50%;transform:translateY(-50%);width:1.05rem;height:1.05rem;padding:0;border:0;border-radius:50%;display:grid;place-items:center;
+  background:transparent;color:var(--faint);cursor:pointer;opacity:0;transition:opacity .15s,background .15s,color .15s}
+.bchipw .bx svg{width:.7rem;height:.7rem}
+.bchipw:hover .bx,.bchipw:focus-within .bx{opacity:1}
+.bchipw .bx:hover,.bchipw .bx:focus-visible{background:var(--bad-soft);color:var(--bad);opacity:1}
+@media (hover:none){.bchipw .bx{opacity:.75}}
+.bchipw.asking{gap:.35rem;padding:.25rem .45rem;border-radius:.8rem;border:1px solid var(--bad);background:var(--bad-soft);font-size:.74rem;font-weight:700;white-space:nowrap}
+.bchipw.asking button{display:inline-flex;align-items:center;gap:.25rem;border:0;border-radius:.6rem;padding:.2rem .55rem;font:inherit;font-weight:800;cursor:pointer}
+.bchipw.asking .bok{background:var(--bad);color:#fff}
+.bchipw.asking .bno{background:var(--panel-hi);color:var(--ink)}
+.bdot{width:.5rem;height:.5rem;border-radius:50%;background:var(--line-soft);flex:none}
+.bdot.queued{background:var(--label);animation:blink 1.4s infinite}.bdot.running{background:var(--accent);animation:blink .8s infinite}.bdot.done{background:var(--ok)}
+.bstat{font-size:.72rem;color:var(--faint);white-space:nowrap}
+.bstat.queued{color:var(--label)}.bstat.running{color:var(--accent)}
+.benchbtn{white-space:nowrap}
+.benchbtn.queued{background:var(--label);color:var(--label-ink)}
+.benchbtn.running{background:var(--panel-hi);color:var(--accent);border-color:var(--accent)}
+.nbform{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.nbform label{display:flex;flex-direction:column;gap:.25rem;font-size:.78rem;font-weight:800;color:var(--muted)}
+.nbform input,.nbform textarea{border-radius:.6rem;border:1px solid var(--line-soft);background:var(--panel);color:var(--ink);padding:.5rem .65rem;font:inherit;font-size:.84rem;font-weight:500}
+.nbform textarea{min-height:5rem;resize:vertical}
+.nbform .full{grid-column:1/-1}
+.nbform .ltr{direction:ltr;text-align:left}
+.chk{flex-direction:row!important;align-items:center;gap:.45rem!important}
+.blist{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.6rem}
+.bcard{display:flex;flex-direction:column;gap:.35rem;padding:.7rem .8rem;border-radius:.9rem;border:1px solid var(--line-soft);background:var(--panel)}
+.bcard.on{border-color:var(--accent)}
+.bcard b{font-size:.9rem}
+.bcard small{color:var(--faint);font-size:.72rem}
+.bcard .rmbtn{margin-inline-start:auto;color:var(--bad)}
+.bcard .rmask{display:flex;flex-direction:column;gap:.45rem;padding:.55rem .65rem;border-radius:.7rem;background:var(--bad-soft);font-size:.76rem;line-height:1.7}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.7rem}
+.logo{width:2.6rem;height:2.6rem;border-radius:.8rem;object-fit:cover;box-shadow:var(--shadow);background:var(--accent-soft)}
+.brand-name{font-weight:900;font-size:1.35rem;letter-spacing:-.01em;direction:ltr}
+.brand-name b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-by{font-size:.76rem;color:var(--muted);direction:ltr;text-align:right}
+.pill{display:inline-flex;align-items:center;gap:.4rem;padding:.28rem .72rem;border-radius:99px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.live{background:var(--ok-soft);color:var(--ok)}
+.live .dot{width:.55rem;height:.55rem;border-radius:50%;background:currentColor;animation:ping 1.6s infinite}
+.live.off{background:var(--bad-soft);color:var(--bad)}
+.live.off .dot{animation:none}
+.demo{background:var(--label-soft);color:var(--label);border:1px dashed currentColor}
+.spacer{flex:1}
+.refpage{display:flex;align-items:center;gap:.75rem;padding:.35rem .5rem .35rem 1rem;border-radius:99px;background:var(--panel);border:1px solid var(--line-soft);transition:box-shadow .4s;max-width:46rem}
+.refpage.active{box-shadow:var(--glow)}
+.ring{width:2.5rem;height:2.5rem;border-radius:50%;padding:2px;background:var(--grad);flex:none}
+.ring > *{width:100%;height:100%;border-radius:50%;border:2px solid var(--bg);display:grid;place-items:center;font-weight:900;object-fit:cover;background:var(--panel-solid);color:var(--ink)}
+.rp-tag{font-size:.68rem;font-weight:800;color:var(--faint)}
+.rp-handle{font-weight:900;font-size:.98rem;direction:ltr;text-align:right}
+.rp-meta{font-size:.76rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:22rem}
+.sw{display:inline-flex;gap:.2rem;align-items:center}
+.sw i{width:.95rem;height:.95rem;border-radius:.3rem;border:1px solid rgba(255,255,255,.18);display:inline-block}
+.clock{font-weight:700;color:var(--muted);font-size:.95rem;min-width:5.5rem;text-align:left}
+
+/* flow (pipeline + counters) */
+.flow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.55rem}
+.fs{position:relative;display:flex;align-items:center;gap:.65rem;padding:.65rem .8rem;border-radius:1rem;background:linear-gradient(160deg,var(--panel-hi),var(--panel));border:1px solid var(--line-soft);overflow:hidden;min-width:0}
+.fs:not(:last-child)::after{content:"";position:absolute;inset-inline-end:-.42rem;top:50%;width:.6rem;height:.6rem;border-top:2px solid var(--line);border-left:2px solid var(--line);transform:translateY(-50%) rotate(-45deg);z-index:1}
+.fs .n{position:absolute;top:.35rem;inset-inline-end:.55rem;font-size:.66rem;font-weight:900;color:var(--faint)}
+.fs .ic{width:2.2rem;height:2.2rem;border-radius:.7rem;display:grid;place-items:center;background:var(--panel-hi);color:var(--faint);flex:none;font-size:1.15rem;transition:all .4s}
+.fs .lbl{font-size:.74rem;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs .val{font-size:1.45rem;font-weight:900;line-height:1.15}
+.fs .sub{font-size:.68rem;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs.done{border-color:var(--line)}
+.fs.done .ic{background:var(--accent-soft);color:var(--accent)}
+.fs.done::before{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:var(--grad)}
+.fs.cur{box-shadow:var(--glow);border-color:transparent}
+.fs.cur .ic{background:var(--grad);color:#fff}
+.fs.bump{animation:bump .7s ease-out}
+
+/* panels */
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.32fr) minmax(0,1fr);gap:.85rem;min-height:0}
+.panel{display:flex;flex-direction:column;min-height:0;border-radius:1.3rem;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .4s}
+.panel.active{box-shadow:var(--shadow),var(--glow)}
+.ph{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.05rem;border-bottom:1px solid var(--line-soft)}
+.ph .ic{width:2.3rem;height:2.3rem;border-radius:.75rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none;font-size:1.2rem}
+.ph h2{margin:0;font-size:1.04rem;font-weight:800}
+.ph p{margin:0;font-size:.76rem;color:var(--muted)}
+.agent{margin-inline-start:auto;background:var(--panel-hi);color:var(--faint);border:1px solid var(--line-soft)}
+.agent .dot{width:.5rem;height:.5rem;border-radius:50%;background:currentColor}
+.panel.active .agent{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.panel.active .agent .dot{animation:blink 1s infinite}
+.nowline{font-size:.76rem;color:var(--accent);padding:.35rem 1.05rem;border-bottom:1px solid var(--line-soft);background:var(--accent-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb{flex:1;min-height:0;overflow:auto;padding:.85rem 1rem;display:flex;flex-direction:column;gap:.65rem;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.pb::-webkit-scrollbar{width:.45rem}.pb::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+.sec{display:flex;align-items:center;gap:.45rem;font-size:.76rem;font-weight:800;color:var(--faint);margin:.15rem 0 -.2rem}
+.sec .cnt{background:var(--panel-hi);border:1px solid var(--line-soft);border-radius:99px;padding:0 .5rem;color:var(--muted)}
+.empty{margin:auto;text-align:center;color:var(--muted);font-size:.88rem;max-width:19rem;padding:1.4rem 0}
+.empty .ic{width:3.1rem;height:3.1rem;margin:0 auto .7rem;border-radius:1rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:1.5rem}
+.empty b{color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chip{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .6rem;border-radius:99px;background:var(--panel-hi);border:1px solid var(--line-soft);font-size:.76rem;color:var(--muted)}
+.chip.now{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+
+/* kind / platform / verdict badges */
+.age{display:inline-flex;align-items:center;gap:.25rem;padding:.05rem .45rem;border-radius:99px;font-size:.68rem;font-weight:800;white-space:nowrap;background:var(--panel-hi);color:var(--muted)}
+.age .i{font-size:.8rem}
+.age.old{background:var(--warn-soft);color:var(--warn)}
+.age.none{color:var(--faint)}
+.kind{display:inline-flex;align-items:center;gap:.28rem;padding:.05rem .5rem;border-radius:99px;font-size:.7rem;font-weight:800;white-space:nowrap}
+.kind.motion{background:var(--motion-soft);color:var(--motion)}
+.kind.filmed{background:var(--filmed-soft);color:var(--filmed)}
+.kind.none{background:var(--panel-hi);color:var(--faint)}
+.plat{display:inline-flex;align-items:center;gap:.25rem;direction:ltr;color:var(--muted);font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plat .i{font-size:.9rem}
+.verdict{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .7rem;border-radius:99px;font-size:.8rem;font-weight:900;white-space:nowrap}
+.verdict.fit{background:var(--ok-soft);color:var(--ok)}
+.verdict.partial{background:var(--warn-soft);color:var(--warn)}
+.verdict.unfit{background:var(--bad-soft);color:var(--bad)}
+.verdict.wait{background:var(--panel-hi);color:var(--faint)}
+
+/* idea rows (column A) */
+.row{display:grid;grid-template-columns:1.9rem 2.6rem minmax(0,1fr) 3.1rem;gap:.6rem;align-items:center;padding:.45rem .55rem;border-radius:.9rem;background:var(--panel-hi);border:1px solid var(--line-soft);position:relative}
+.row.top{border-color:transparent;background:linear-gradient(var(--panel-solid),var(--panel-solid)) padding-box, var(--grad) border-box;border:1px solid transparent}
+:root:not([data-theme="light"]) .row.top{background:linear-gradient(rgba(30,16,34,.96),rgba(30,16,34,.96)) padding-box, var(--grad) border-box}
+.row.gone{opacity:.45}
+.rank{font-weight:900;font-size:1rem;text-align:center;color:var(--faint)}
+.row.top .rank{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1.15rem}
+.thumb{width:2.6rem;aspect-ratio:9/16;border-radius:.5rem;object-fit:cover;background:linear-gradient(135deg,var(--accent-soft),var(--motion-soft));display:grid;place-items:center;color:var(--muted);overflow:hidden}
+.thumb .i{font-size:1rem}
+.rt{font-size:.84rem;font-weight:800;line-height:1.45;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.rs{display:flex;align-items:center;gap:.4rem;font-size:.72rem;margin-top:.05rem;min-width:0;flex-wrap:wrap}
+.metrics{display:flex;flex-wrap:wrap;gap:.15rem .65rem;font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.metrics span{display:inline-flex;align-items:center;gap:.22rem;white-space:nowrap}
+.metrics .i{font-size:.82rem;color:var(--faint)}
+.score{display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.score b{font-size:1.05rem;font-weight:900;line-height:1}
+.score small{font-size:.6rem;color:var(--faint);font-weight:700}
+.sbar{width:100%;height:.3rem;border-radius:99px;background:var(--line-soft);overflow:hidden}
+.sbar span{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.toptag{position:absolute;top:-.45rem;inset-inline-start:.5rem;font-size:.6rem;font-weight:900;padding:.02rem .42rem;border-radius:.35rem;background:var(--label);color:var(--label-ink);transform:rotate(-4deg);letter-spacing:.04em}
+.vdot{position:absolute;top:.45rem;inset-inline-start:.45rem;width:.55rem;height:.55rem;border-radius:50%}
+.vdot.fit{background:var(--ok)}.vdot.partial{background:var(--warn)}.vdot.unfit{background:var(--bad)}
+
+/* QC cards (column B) */
+.qc{display:flex;flex-direction:column;gap:.7rem;padding:.9rem;border-radius:1.1rem;background:var(--panel-hi);border:1px solid var(--line-soft);transition:border-color .4s,box-shadow .4s,opacity .4s}
+.qc.d-approved,.qc.d-approved_alt{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok-soft),0 0 26px -8px var(--ok)}
+.qc.d-deleted{opacity:.55}
+.qc.checking{border-color:var(--accent);box-shadow:var(--glow)}
+.qh{display:grid;grid-template-columns:auto 3rem minmax(0,1fr) auto;gap:.7rem;align-items:center}
+.qrank{font-size:1.7rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.qh .thumb{width:3rem}
+.qt{font-weight:900;font-size:.98rem;line-height:1.45}
+.qs{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;font-size:.74rem;margin-top:.15rem}
+.fitring{--p:0;width:3.3rem;height:3.3rem;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--p)*1%), var(--line-soft) 0);position:relative}
+.fitring::before{content:"";position:absolute;inset:.28rem;border-radius:50%;background:var(--panel-solid)}
+.fitring b{position:relative;font-size:.86rem;font-weight:900}
+.fitring small{position:absolute;bottom:-1.05rem;font-size:.6rem;color:var(--faint);white-space:nowrap;font-weight:700}
+.mstrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.4rem}
+.mbox{padding:.4rem .5rem;border-radius:.7rem;background:var(--panel);border:1px solid var(--line-soft);display:flex;align-items:center;gap:.4rem;min-width:0}
+.mbox .i{font-size:1rem;color:var(--accent)}
+.mbox b{font-size:.92rem;font-weight:900;display:block;line-height:1.2;white-space:nowrap}
+.mbox small{font-size:.62rem;color:var(--faint);display:block}
+.checks{display:flex;flex-wrap:wrap;gap:.35rem}
+.ck{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .55rem;border-radius:.55rem;font-size:.74rem;font-weight:800;border:1px solid var(--line-soft);background:var(--panel);cursor:help}
+.ck.ok{color:var(--ok)}.ck.warn{color:var(--warn);background:var(--warn-soft);border-color:transparent}.ck.bad{color:var(--bad);background:var(--bad-soft);border-color:transparent}
+.signal{background:var(--label-soft);color:var(--label);font-weight:800}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.why > div{padding:.6rem .7rem;border-radius:.85rem;background:var(--panel);border:1px solid var(--line-soft)}
+.why h5{margin:0 0 .25rem;font-size:.76rem;display:flex;align-items:center;gap:.35rem;color:var(--bad)}
+.qc.v-partial .why h5{color:var(--warn)}
+.why p{margin:0;font-size:.8rem;color:var(--ink);opacity:.92}
+.palcmp{display:flex;align-items:center;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.palcmp small{display:block;font-size:.62rem;color:var(--faint);font-weight:700;margin-bottom:.15rem}
+.palcmp .neq{font-size:1.15rem;font-weight:900;color:var(--bad)}
+.palcmp .sw i{width:1.1rem;height:1.1rem}
+.adapt{font-size:.78rem;color:var(--muted);display:flex;gap:.35rem;align-items:flex-start}
+.adapt .i{color:var(--ok);margin-top:.2rem}
+.altbox{position:relative;padding:.8rem .8rem .7rem;border-radius:.95rem;background:linear-gradient(160deg,var(--label-soft),transparent);border:1px dashed var(--label)}
+.sticker{position:absolute;top:-.7rem;inset-inline-start:.8rem;background:var(--label);color:var(--label-ink);font-weight:900;font-size:.7rem;padding:.12rem .55rem;border-radius:.4rem;transform:rotate(-3deg);box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
+.altbox b{display:block;font-size:.92rem;margin-top:.15rem}
+.altbox .hook{font-size:.78rem;color:var(--label);font-weight:700}
+.altbox p{margin:.2rem 0 0;font-size:.78rem;color:var(--muted)}
+.actions{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.42rem .85rem;border-radius:.7rem;border:1px solid var(--line-soft);background:var(--panel);font-weight:800;font-size:.8rem;cursor:pointer;transition:transform .15s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:wait;transform:none}
+.btn.ok{background:var(--ok);color:#04261F;border-color:transparent}
+.btn.alt{background:var(--label);color:var(--label-ink);border-color:transparent}
+.btn.del{color:var(--bad);border-color:var(--bad-soft);background:var(--bad-soft)}
+.btn.ghost{background:transparent}
+.btn.grad{background:var(--grad);color:#fff;border-color:transparent}
+.btn .i{font-size:1rem}
+.status{display:inline-flex;align-items:center;gap:.35rem;padding:.32rem .75rem;border-radius:.7rem;font-weight:900;font-size:.8rem}
+.status.ok{background:var(--ok-soft);color:var(--ok)}.status.del{background:var(--bad-soft);color:var(--bad)}.status.wait{background:var(--panel);color:var(--faint);border:1px dashed var(--line-soft)}
+.status.warn{background:var(--warn-soft);color:var(--warn)}
+.skel{height:.7rem;border-radius:99px;background:linear-gradient(90deg,var(--line-soft),var(--panel-hi),var(--line-soft));background-size:200% 100%;animation:shimmer 1.4s infinite}
+
+/* production board (column C) */
+.lane{display:flex;flex-direction:column;gap:.5rem;padding:.6rem;border-radius:1rem;border:1px solid var(--line-soft);background:var(--panel)}
+.lane-h{display:flex;align-items:center;gap:.45rem;font-weight:900;font-size:.88rem}
+.lane-h .ic{width:1.9rem;height:1.9rem;border-radius:.6rem;display:grid;place-items:center;font-size:1rem}
+.lane.motion .lane-h .ic{background:var(--motion-soft);color:var(--motion)}
+.lane.filmed .lane-h .ic{background:var(--filmed-soft);color:var(--filmed)}
+.lane-h small{font-weight:700;color:var(--faint);font-size:.7rem}
+.lane-h .cnt{margin-inline-start:auto;font-size:.8rem;padding:0 .55rem;border-radius:99px;background:var(--panel-hi)}
+.pc{padding:.65rem .7rem;border-radius:.85rem;background:var(--panel-hi);border:1px solid var(--line-soft);display:flex;flex-direction:column;gap:.5rem;cursor:pointer;transition:border-color .3s,transform .15s}
+.pc:hover{border-color:var(--accent);transform:translateY(-1px)}
+.pc.wait-sb{border-color:var(--label)}
+.pc.prod{border-color:var(--ok)}
+.pc-t{font-weight:900;font-size:.88rem;line-height:1.45}
+.pc-o{font-size:.7rem;color:var(--faint);display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+.tagalt{font-size:.62rem;font-weight:900;padding:0 .35rem;border-radius:.3rem;background:var(--label);color:var(--label-ink)}
+.track{display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+.track::before{content:"";position:absolute;top:.5rem;right:12%;left:12%;height:2px;background:var(--line-soft)}
+.track .fill{position:absolute;top:.5rem;right:12%;height:2px;background:var(--grad);transition:width .6s}
+.tk{position:relative;display:flex;flex-direction:column;align-items:center;gap:.15rem;font-size:.62rem;color:var(--faint);font-weight:800;text-align:center}
+.tk i{width:1rem;height:1rem;border-radius:50%;background:var(--panel-solid);border:2px solid var(--line-soft);display:grid;place-items:center;font-style:normal}
+.tk i svg{width:.55rem;height:.55rem;opacity:0}
+.tk.done{color:var(--muted)}.tk.done i{background:var(--accent);border-color:var(--accent);color:#fff}.tk.done i svg{opacity:1}
+.tk.cur{color:var(--accent)}.tk.cur i{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);animation:ring 1.4s infinite}
+.pc-b{display:flex;gap:.35rem;flex-wrap:wrap}
+.mini{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:800;padding:.15rem .5rem;border-radius:.5rem;background:var(--panel);border:1px solid var(--line-soft);color:var(--muted)}
+.mini.ready{color:var(--ok)}
+.mini.need{color:var(--label);border-color:var(--label);animation:blink 1.6s infinite}
+.mini.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+details.gone-list{font-size:.78rem;color:var(--muted)}
+details.gone-list summary{cursor:pointer;font-weight:800;color:var(--faint)}
+.gone-item{display:flex;align-items:center;gap:.4rem;padding:.35rem 0;border-bottom:1px dashed var(--line-soft)}
+.gone-item span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:line-through}
+
+/* log */
+.log{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:1rem;padding:.6rem 1.1rem;border-radius:1rem;background:var(--panel);border:1px solid var(--line-soft)}
+.log h3{margin:0;font-size:.8rem;color:var(--faint);font-weight:800;white-space:nowrap}
+.log ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.1rem;max-height:4.6rem;overflow:hidden}
+.log li{display:flex;gap:.6rem;align-items:baseline;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log li:first-child{color:var(--ink)}
+.log time{color:var(--faint);flex:none}
+.tag{font-size:.66rem;font-weight:800;padding:0 .4rem;border-radius:.35rem;flex:none;background:var(--accent-soft);color:var(--accent)}
+.tag.page{background:var(--motion-soft);color:var(--motion)}.tag.qc{background:var(--warn-soft);color:var(--warn)}
+.tag.client{background:var(--ok-soft);color:var(--ok)}.tag.prod{background:var(--filmed-soft);color:var(--filmed)}.tag.system{background:var(--panel-hi);color:var(--muted)}
+.notice{font-size:.7rem;color:var(--faint);white-space:nowrap}
+.copy{display:inline-flex;align-items:center;gap:.3rem;direction:ltr;font-weight:800;letter-spacing:.01em;white-space:nowrap}
+.copy .i{font-size:.95em}
+.copy-pill{padding:.28rem .72rem;border-radius:99px;font-size:.76rem;color:var(--ink);background:var(--panel);border:1px solid var(--line)}
+.copy-pill b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
+.theme-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.22rem .3rem .22rem .75rem;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:800;font-size:.78rem;cursor:pointer;transition:border-color .2s,background .2s}
+.theme-btn:hover{border-color:var(--accent)}
+.theme-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tsw{position:relative;width:2.6rem;height:1.45rem;border-radius:99px;background:var(--panel-hi);border:1px solid var(--line-soft);flex:none}
+.tsw i{position:absolute;top:.12rem;right:.12rem;width:1.1rem;height:1.1rem;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;transition:transform .3s cubic-bezier(.3,.7,.3,1);font-style:normal}
+.tsw i svg{width:.72rem;height:.72rem}
+:root[data-theme="light"] .tsw i{transform:translateX(-1.15rem)}
+:root[data-theme="light"] .sw i{border-color:rgba(0,0,0,.14)}
+:root[data-theme="light"] .overlay{background:rgba(40,20,32,.38)}
+.pf{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.4rem 1.05rem;border-top:1px solid var(--line-soft);font-size:.66rem;color:var(--faint)}
+.wm{position:absolute;bottom:.5rem;left:.5rem;direction:ltr;font-size:.56rem;font-weight:900;color:#fff;background:rgba(0,0,0,.42);padding:.02rem .38rem;border-radius:.35rem;letter-spacing:.02em}
+.dcopy{padding:.45rem 1.2rem;border-top:1px solid var(--line-soft);font-size:.7rem;color:var(--faint);display:flex;justify-content:space-between;gap:.5rem}
+
+/* drawer */
+.overlay{position:fixed;inset:0;background:rgba(6,2,8,.62);backdrop-filter:blur(6px);display:grid;place-items:center;z-index:20;padding:1.2rem}
+.drawer{width:min(78rem,100%);height:min(92vh,60rem);display:flex;flex-direction:column;border-radius:1.4rem;background:var(--panel-solid);border:1px solid var(--line);box-shadow:0 40px 80px -30px rgba(0,0,0,.8);overflow:hidden}
+:root:not([data-theme="light"]) .drawer{background:linear-gradient(180deg,#1E1124,#140B18)}
+.dh{display:flex;align-items:center;gap:.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--line-soft)}
+.dh .thumb{width:2.6rem}
+.dh h3{margin:0;font-size:1.15rem;font-weight:900}
+.dh p{margin:0;font-size:.76rem;color:var(--muted)}
+.tabs{display:flex;gap:.3rem;padding:.55rem 1.2rem 0;border-bottom:1px solid var(--line-soft)}
+.tab{padding:.5rem .95rem;border:0;background:transparent;border-bottom:3px solid transparent;font-weight:800;font-size:.86rem;color:var(--muted);cursor:pointer;display:inline-flex;gap:.35rem;align-items:center}
+.tab.on{color:var(--ink);border-image:var(--grad) 1}
+.tab .badge{font-size:.62rem;padding:0 .35rem;border-radius:.3rem;background:var(--ok-soft);color:var(--ok)}
+.tab .badge.wait{background:var(--panel-hi);color:var(--faint)}
+.db{flex:1;min-height:0;overflow:auto;padding:1.1rem 1.2rem;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.pane{display:flex;flex-direction:column;gap:.9rem}
+.df{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.2rem;border-top:1px solid var(--line-soft);flex-wrap:wrap}
+.df textarea{flex:1;min-width:14rem;min-height:2.4rem;max-height:6rem;resize:vertical;border-radius:.7rem;border:1px solid var(--line-soft);background:var(--panel);color:var(--ink);padding:.45rem .7rem;font:inherit;font-size:.82rem}
+.x{margin-inline-start:auto;width:2.3rem;height:2.3rem;border-radius:.7rem;border:1px solid var(--line-soft);background:var(--panel);cursor:pointer;display:grid;place-items:center;font-size:1.1rem}
+.kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem}
+.kv > div{padding:.65rem .8rem;border-radius:.9rem;background:var(--panel);border:1px solid var(--line-soft)}
+.kv small{display:block;font-size:.68rem;color:var(--faint);font-weight:800}
+.kv b{font-size:.92rem}
+.groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+.grp{padding:.75rem .85rem;border-radius:1rem;background:var(--panel);border:1px solid var(--line-soft)}
+.grp h4{margin:0 0 .45rem;font-size:.86rem;display:flex;align-items:center;gap:.4rem}
+.grp h4 .ic{width:1.8rem;height:1.8rem;border-radius:.55rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:.95rem}
+.grp ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.3rem}
+.grp li{display:flex;gap:.45rem;font-size:.8rem;align-items:flex-start}
+.grp li .st{flex:none;width:1.05rem;height:1.05rem;border-radius:.3rem;display:grid;place-items:center;margin-top:.15rem;font-size:.7rem;border:1.5px solid var(--line)}
+.grp li .st.have{background:var(--ok);border-color:var(--ok);color:#04261F}
+.grp li .st.need{border-color:var(--label);color:var(--label)}
+.grp li small{display:block;color:var(--faint);font-size:.7rem}
+.legend{display:flex;gap:1rem;font-size:.72rem;color:var(--faint)}
+.legend span{display:inline-flex;gap:.3rem;align-items:center}
+.two{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:.7rem}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.35rem}
+.timeline li{display:flex;justify-content:space-between;gap:.6rem;font-size:.8rem;padding:.35rem .55rem;border-radius:.6rem;background:var(--panel-hi)}
+.timeline li b{color:var(--accent);font-size:.74rem;white-space:nowrap}
+.bul{margin:0;padding-inline-start:1.1rem;font-size:.8rem;display:flex;flex-direction:column;gap:.25rem}
+.sbmeta{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.78rem}
+.strip{display:flex;gap:.8rem;overflow-x:auto;padding:.3rem .1rem 1rem;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.frame{flex:none;width:13.2rem;display:flex;flex-direction:column;gap:.45rem}
+.canvas{position:relative;width:100%;aspect-ratio:9/16;border-radius:1rem;overflow:hidden;border:1px solid var(--line-soft);box-shadow:var(--shadow);background:#222}
+.canvas svg,.canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fno{position:absolute;top:.5rem;right:.5rem;background:rgba(0,0,0,.55);color:#fff;font-weight:900;font-size:.72rem;padding:.05rem .45rem;border-radius:.4rem}
+.ftime{position:absolute;top:.5rem;left:.5rem;background:var(--label);color:var(--label-ink);font-weight:900;font-size:.68rem;padding:.05rem .45rem;border-radius:.4rem;direction:ltr}
+.ftext{position:absolute;inset-inline:.6rem;top:46%;text-align:center;font-weight:900;font-size:.86rem;line-height:1.45;color:#fff;padding:.3rem .45rem;border-radius:.55rem;background:rgba(20,10,20,.72);box-shadow:0 8px 20px -8px rgba(0,0,0,.7)}
+.fshot{position:absolute;bottom:.5rem;right:.5rem;font-size:.62rem;font-weight:800;color:#fff;background:rgba(0,0,0,.45);padding:.02rem .4rem;border-radius:.35rem;direction:ltr}
+.fd{font-size:.76rem;display:flex;flex-direction:column;gap:.25rem}
+.fd .vis{font-weight:700}
+.fd .vo{color:var(--muted);border-inline-start:3px solid var(--accent);padding-inline-start:.45rem;font-style:normal}
+.fd .row2{display:flex;flex-wrap:wrap;gap:.25rem}
+.fd .row2 span{font-size:.66rem;padding:.05rem .4rem;border-radius:.35rem;background:var(--panel-hi);color:var(--faint);border:1px solid var(--line-soft)}
+.wait-box{display:flex;flex-direction:column;align-items:center;gap:.6rem;padding:3rem 1rem;color:var(--muted);text-align:center}
+.wait-box .ic{width:3.4rem;height:3.4rem;border-radius:1rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:1.6rem}
+.wait-box .skel{width:14rem}
+
+.toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:30;padding:.6rem 1rem;border-radius:.9rem;background:var(--panel-solid);border:1px solid var(--line);box-shadow:var(--shadow);font-weight:800;font-size:.86rem}
+.offline{position:fixed;inset:auto 1rem 1rem auto;max-width:24rem;padding:.9rem 1rem;border-radius:1rem;background:var(--bad-soft);color:var(--bad);font-size:.85rem;font-weight:600;border:1px solid var(--bad);z-index:40}
+
+/* motion */
+.enter{animation:enter .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes enter{from{opacity:0;filter:blur(10px);transform:translateY(-.6rem) scale(.97)}to{opacity:1;filter:blur(0);transform:none}}
+.flash{animation:flash 1.3s ease-out}
+@keyframes flash{0%{box-shadow:var(--glow)}100%{box-shadow:none}}
+@keyframes ping{0%{box-shadow:0 0 0 0 currentColor}70%{box-shadow:0 0 0 .5rem transparent}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes ring{0%{box-shadow:0 0 0 0 var(--accent-soft)}100%{box-shadow:0 0 0 .5rem transparent}}
+@keyframes shimmer{to{background-position:-200% 0}}
+@keyframes bump{0%{transform:none}30%{transform:scale(1.04)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* platform switch */
+.psw{display:inline-flex;padding:.2rem;border-radius:99px;background:var(--panel);border:1px solid var(--line);gap:.15rem}
+.psw button{display:inline-flex;align-items:center;gap:.35rem;border:0;background:transparent;color:var(--muted);font:inherit;font-weight:800;font-size:.8rem;padding:.32rem .8rem;border-radius:99px;cursor:pointer;transition:background .2s,color .2s}
+.psw button .i{font-size:1rem}
+.psw button .busy{width:.45rem;height:.45rem;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 1.6s infinite}
+.psw button.on .busy{background:#fff}
+.psw button .pst{font-size:.62rem;font-weight:900;padding:0 .35rem;border-radius:99px;background:var(--panel-hi);color:var(--muted)}
+.psw button .pst.done{background:var(--ok-soft);color:var(--ok)}
+.psw button.on .pst{background:rgba(255,255,255,.22);color:#fff}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(214,41,118,.55)}70%{box-shadow:0 0 0 .45rem rgba(214,41,118,0)}100%{box-shadow:0 0 0 0 rgba(214,41,118,0)}}
+.rg{display:inline-flex;align-items:center;font-size:.62rem;font-weight:900;padding:0 .38rem;border-radius:.35rem;line-height:1.5;white-space:nowrap}
+.rg.ir{background:var(--ok-soft);color:var(--ok)}
+.rg.intl{background:var(--label-soft);color:var(--label)}
+.bpick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+.bopt{position:relative;display:flex;flex-direction:column;gap:.3rem;padding:.8rem .9rem;border-radius:1rem;border:1.5px solid var(--line-soft);background:var(--panel);cursor:pointer;transition:border-color .2s,background .2s}
+.bopt input{position:absolute;opacity:0;pointer-events:none}
+.bopt b{display:flex;align-items:center;gap:.4rem;font-size:.92rem}
+.bopt small{color:var(--faint);font-size:.72rem;line-height:1.6}
+.bopt.on{border-color:var(--accent);background:linear-gradient(160deg,var(--accent-soft),var(--panel))}
+.bopt.on::after{content:"✓";position:absolute;top:.5rem;inset-inline-end:.7rem;font-weight:900;color:var(--accent)}
+.bopt.off{opacity:.55;cursor:not-allowed}
+.bopt:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.bsec{display:flex;flex-direction:column;gap:.55rem}
+.bsec h4{margin:0;font-size:.86rem}
+.bsum{font-size:.8rem;color:var(--muted);line-height:1.8}
+.psw button.on{color:#fff;background:var(--grad);box-shadow:0 6px 16px -8px rgba(214,41,118,.7)}
+.psw button[data-pl="youtube"].on{background:linear-gradient(120deg,#FF4E45,#C4302B);box-shadow:0 6px 16px -8px rgba(255,0,0,.6)}
+.psw button[data-pl="linkedin"].on{background:linear-gradient(120deg,#2D8CE8,#0A66C2);box-shadow:0 6px 16px -8px rgba(10,102,194,.7)}
+.psw .cnt{font-size:.62rem;min-width:1.1rem;height:1.1rem;padding:0 .3rem;border-radius:99px;display:inline-grid;place-items:center;background:rgba(255,255,255,.22)}
+.psw button:not(.on) .cnt{background:var(--panel-hi);color:var(--faint)}
+.msw button.on{background:linear-gradient(120deg,#3DD6B5,#1F8F7A);box-shadow:0 6px 16px -8px rgba(61,214,181,.7)}
+.msw button[data-mode="login"].on{background:linear-gradient(120deg,#F5C84B,#E08A1E);color:#2B2104;box-shadow:0 6px 16px -8px rgba(245,200,75,.7)}
+.modecard{display:flex;gap:.7rem;align-items:flex-start;padding:.75rem .9rem;border-radius:.9rem;border:1px solid var(--line-soft);background:var(--panel)}
+.modecard .ic{width:2.2rem;height:2.2rem;border-radius:.7rem;display:grid;place-items:center;flex:none;font-size:1.1rem;background:var(--ok-soft);color:var(--ok)}
+.modecard.login .ic{background:var(--label-soft);color:var(--label)}
+.modecard b{display:block;font-size:.9rem}
+.modecard p{margin:.15rem 0 0;font-size:.8rem;color:var(--muted)}
+.brief{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.brief label{display:flex;flex-direction:column;gap:.25rem;font-size:.78rem;font-weight:800;color:var(--muted)}
+.brief input,.brief textarea{border-radius:.6rem;border:1px solid var(--line-soft);background:var(--panel);color:var(--ink);padding:.5rem .65rem;font:inherit;font-size:.84rem;font-weight:500}
+.brief textarea{min-height:5.5rem;resize:vertical}
+.brief .ltr{direction:ltr;text-align:left}
+.brief .full{grid-column:1/-1}
+.drop{display:flex;align-items:center;gap:.6rem;padding:.8rem;border-radius:.8rem;border:1.5px dashed var(--line);background:var(--panel);cursor:pointer;font-size:.8rem;color:var(--muted)}
+.drop:hover,.drop.over{border-color:var(--accent);color:var(--ink)}
+.drop .i{font-size:1.3rem;color:var(--accent)}
+.filelist{display:flex;flex-wrap:wrap;gap:.3rem}
+.filelist span{font-size:.72rem;padding:.1rem .5rem;border-radius:.4rem;background:var(--panel-hi);border:1px solid var(--line-soft);direction:ltr}
+.frame.wide{width:21rem}
+.frame.wide .canvas{aspect-ratio:16/9}
+/* reference page chip → brand drawer */
+button.refpage{font:inherit;color:inherit;cursor:pointer;text-align:start}
+button.refpage:hover{border-color:var(--accent)}
+.stbadge{display:inline-flex;align-items:center;gap:.25rem;font-size:.66rem;font-weight:900;padding:.05rem .45rem;border-radius:.4rem;background:var(--ok-soft);color:var(--ok);margin-inline-start:.35rem;vertical-align:middle}
+.stbadge.no{background:var(--panel-hi);color:var(--faint)}
+.brand-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.brand-grid .grp p{margin:0;font-size:.84rem}
+.tagrow{display:flex;flex-wrap:wrap;gap:.3rem}
+.tagrow span{font-size:.76rem;padding:.12rem .55rem;border-radius:99px;background:var(--panel-hi);border:1px solid var(--line-soft)}
+.tagrow.bad span{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.tagrow.good span{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.srcline{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;font-size:.8rem}
+.srcline a{color:var(--accent);font-weight:800;text-decoration:none;direction:ltr}
+/* add a reel link */
+.addbtn{margin-inline-start:auto;display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:99px;border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:900;font-size:.76rem;cursor:pointer}
+.addbtn + .agent{margin-inline-start:.4rem}
+.addbox{display:flex;flex-direction:column;gap:.45rem;padding:.7rem;border-radius:.9rem;background:var(--panel-hi);border:1px dashed var(--accent)}
+.addbox .row1{display:flex;gap:.4rem}
+.addbox input{flex:1;min-width:0;border-radius:.6rem;border:1px solid var(--line-soft);background:var(--panel);color:var(--ink);padding:.5rem .65rem;font:inherit;font-size:.84rem;direction:ltr;text-align:left}
+.addbox small{font-size:.7rem;color:var(--faint)}
+.inbox-item{display:flex;align-items:center;gap:.45rem;font-size:.74rem;padding:.35rem .55rem;border-radius:.6rem;background:var(--panel);border:1px solid var(--line-soft)}
+.inbox-item a{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:left;color:var(--muted);text-decoration:none}
+.inbox-item .st2{font-weight:900;font-size:.66rem;padding:0 .4rem;border-radius:.35rem;background:var(--label-soft);color:var(--label);white-space:nowrap}
+.inbox-item .st2.done{background:var(--ok-soft);color:var(--ok)}
+.inbox-item .st2.skipped{background:var(--panel-hi);color:var(--faint)}
+.steps-list{margin:0;padding-inline-start:1.2rem;font-size:.84rem;display:flex;flex-direction:column;gap:.35rem}
+.onlinenote{font-size:.74rem;line-height:1.6;padding:.35rem .8rem;border-radius:.7rem;background:var(--panel);color:var(--muted);border:1px solid var(--line-soft)}
+.packbtn{padding:.3rem .8rem;font-size:.78rem}
+/* narrow window */
+@media (max-width:760px){
+  .app{padding:.8rem .75rem 1rem;gap:.7rem}
+  .top{gap:.55rem}
+  .brand-name{font-size:1.15rem}
+  .brand-by{font-size:.68rem}
+  .theme-btn{padding:.2rem .25rem .2rem .55rem;font-size:.72rem}
+  .brow{flex-wrap:wrap}
+  .brow .bchips{order:5;width:100%}
+  .brow .spacer{display:none}
+  .benchbtn{margin-inline-start:auto}
+  .nbform{grid-template-columns:1fr}
+  .msw{order:3;width:100%}
+  .msw button{flex:1;justify-content:center;font-size:.74rem;padding:.32rem .4rem}
+  .brief{grid-template-columns:1fr}
+  .bpick{grid-template-columns:1fr}
+  .flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
+  .fs{flex-direction:column;align-items:flex-start;gap:.3rem;padding:.5rem .55rem}
+  .fs .ic{width:1.7rem;height:1.7rem;font-size:.9rem}
+  .fs .val{font-size:1.1rem}
+  .fs .sub{display:none}
+  .fs:last-child{grid-column:span 3;flex-direction:row;align-items:center}
+  .pb{max-height:none}
+  .overlay{padding:0;place-items:end stretch}
+  .drawer{width:100%;height:92vh;border-radius:1.2rem 1.2rem 0 0}
+  .dh{flex-wrap:wrap}
+  .brand-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:1100px){
+  .app{height:auto;min-height:100vh;padding:1rem}
+  .app>.cols{flex:none}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fs::after{display:none}
+  .cols{grid-template-columns:1fr}
+  .pb{max-height:75vh}
+  .log{grid-template-columns:1fr}
+  .refpage{order:5;width:100%;border-radius:1rem;min-width:0}
+  .refpage > div:nth-child(2){flex:1}
+  .rp-meta{max-width:100%;white-space:normal}
+  .copy-pill{order:4}
+  .notice{white-space:normal}
+  .log li{white-space:normal}
+  .clock{display:none}
+  .why,.kv,.groups,.two{grid-template-columns:1fr}
+  .mstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .app,.toast,.offline,.tabs,.df,.x,.dh .btn{display:none!important}
+  .dcopy{color:#555;border-top:1px solid #ccc}
+  .overlay{position:static;background:none;backdrop-filter:none;padding:0;display:block}
+  .drawer{width:100%;height:auto;border:0;box-shadow:none;background:#fff!important;color:#111}
+  .db{overflow:visible}
+  .pane[hidden]{display:flex!important}
+  .pane{break-inside:auto;margin-bottom:1.5rem}
+  .strip{flex-wrap:wrap;overflow:visible}
+  .frame{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="/logo.png" alt="" onerror="this.style.visibility='hidden'">
+      <div><div class="brand-name">Social <b>Idea Lab</b></div><div class="brand-by">by Tarfandhaye.ai · © tarfandhaye.ai</div></div>
+    </div>
+    <span class="pill live" id="live"><span class="dot"></span><span id="liveText">زنده</span></span>
+    <span class="pill demo" id="demo" hidden>داده‌ی نمونه · DEMO</span>
+    <span class="spacer"></span>
+    <div class="psw msw" id="modeSw" role="group" aria-label="روش بررسی">
+      <button type="button" data-mode="login" title="مرورگر با حساب خودت یا آژانس لاگینه (نه حساب برند)؛ Claude فقط می‌خونه"><span class="i" data-icon="key"></span>بررسی با لاگین</button>
+      <button type="button" data-mode="strategy" title="بدون لاگین: سند استراتژی، لینک پیج، نمونه پست، توضیح متنی، PDF و Word"><span class="i" data-icon="doc"></span>بررسی با سند استراتژی</button>
+    </div>
+    <div class="psw" id="platSw" role="group" aria-label="پلتفرم">
+      <button type="button" data-pl="instagram"><span class="i" data-icon="ig"></span>اینستاگرام<span class="cnt num" hidden></span></button>
+      <button type="button" data-pl="youtube"><span class="i" data-icon="yt"></span>یوتیوب<span class="cnt num" hidden></span></button>
+      <button type="button" data-pl="linkedin"><span class="i" data-icon="li"></span>لینکدین<span class="cnt num" hidden></span></button>
+    </div>
+    <button class="btn grad packbtn" id="packBtn" type="button" hidden title="همه‌ی تأیید و حذف‌ها و درخواست‌هات رو کپی می‌کنه تا توی چت با Claude بچسبونی"><span class="i" data-icon="send"></span>پیام برای Claude</button>
+    <button class="refpage" id="refpage" type="button" hidden title="پیج رفرنس و استراتژی برند"></button>
+    <span class="copy copy-pill" title="Instagram: @tarfandhaye.ai">© <b>tarfandhaye.ai</b></span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false"><span id="themeLabel">تم روشن</span><span class="tsw"><i id="themeKnob"></i></span></button>
+    <div class="clock num" id="clock"></div>
+  </header>
+
+  <div class="onlinenote" id="onlineNote" hidden><span id="onlineText"></span>
+    <textarea id="packBox" hidden readonly rows="5" style="width:100%;margin-top:.5rem;direction:ltr;text-align:left"></textarea></div>
+  <section class="brow" id="brandRow" aria-label="برندها">
+    <span class="brow-t"><span class="i" data-icon="box"></span>برندها</span>
+    <div class="bchips" id="brandChips"></div>
+    <button class="addbtn" id="addBrandBtn" type="button" title="اضافه کردن برند یا پیج تازه"><span class="i" data-icon="plus"></span>برند</button>
+    <span class="spacer"></span>
+    <span class="bstat" id="benchStat"></span>
+    <button class="btn grad benchbtn" id="benchBtn" type="button"><span class="i" data-icon="search"></span><span id="benchLabel">بنچ‌مارک جدید</span></button>
+  </section>
+
+  <section class="flow" id="flow"></section>
+
+  <main class="cols">
+    <section class="panel" id="p-scout">
+      <div class="ph"><div class="ic" data-icon="search"></div><div><h2>۲۰ ایده‌ی پیدا شده</h2><p>مرتب بر اساس امتیاز: بازدید، تعامل، اشتراک و رشد</p></div>
+        <button class="addbtn" id="addReelBtn" type="button"><span class="i" data-icon="plus"></span>لینک ریل</button>
+        <span class="pill agent"><span class="dot"></span><span class="agent-text">آماده</span></span></div>
+      <div class="nowline" hidden></div>
+      <div class="pb">
+        <form class="addbox" id="addForm" hidden autocomplete="off">
+          <div class="row1"><input id="addUrl" type="url" inputmode="url" placeholder="https://www.instagram.com/reel/…" required>
+            <button class="btn grad" type="submit"><span class="i" data-icon="plus"></span>بفرست</button></div>
+          <input id="addNote" type="text" placeholder="یادداشت (اختیاری): چرا این ریل؟" style="direction:rtl;text-align:right">
+          <small id="addHelp">روی ریل ← Share ← Copy link بزن و این‌جا بچسبون. بدون لاگین؛ Claude خودش ریل رو می‌خونه.</small>
+        </form>
+        <div id="inboxBox" style="display:flex;flex-direction:column;gap:.35rem"></div>
+        <div class="chips" id="queries"></div>
+        <div class="sec" id="ideasSec" hidden>ریل‌ها <span class="cnt num" id="ideasCnt"></span></div>
+        <div id="ideas" style="display:flex;flex-direction:column;gap:.55rem"></div>
+        <div class="empty" id="ideasEmpty"><div class="ic" data-icon="search"></div>هنوز جستجویی نشده.<br><button class="btn grad" type="button" id="emptyBench" style="margin-top:.7rem"><span class="i" data-icon="search"></span>شروع جستجو با Claude</button></div>
+      </div>
+      <div class="pf"><span class="copy">© tarfandhaye.ai</span><span>جستجو و امتیازدهی</span></div>
+    </section>
+
+    <section class="panel" id="p-qc">
+      <div class="ph"><div class="ic" data-icon="shield"></div><div><h2>تاپ ۵ · کنترل کیفیت (QC)</h2><p id="qcSub">آیا این ایده به درد پیج رفرنس می‌خوره؟</p></div>
+        <span class="pill agent"><span class="dot"></span><span class="agent-text">آماده</span></span></div>
+      <div class="nowline" hidden></div>
+      <div class="pb">
+        <div id="qcList" style="display:flex;flex-direction:column;gap:.8rem"></div>
+        <div class="empty" id="qcEmpty"><div class="ic" data-icon="star"></div>بعد از جستجو، <b>۵ ایده‌ی برتر</b> اینجا میاد و Claude هر کدوم رو با پیج رفرنس می‌سنجه.<br>هیچ ایده‌ای حذف نمی‌شه؛ تصمیم با کارفرماست.</div>
+      </div>
+      <div class="pf"><span class="copy">© tarfandhaye.ai</span><span>QC و تصمیم کارفرما</span></div>
+    </section>
+
+    <section class="panel" id="p-prod">
+      <div class="ph"><div class="ic" data-icon="clap"></div><div><h2>ایده‌های ساخت</h2><p>بعد از تأیید کارفرما: پیش‌تولید، استوری‌بورد، تولید</p></div>
+        <span class="pill agent"><span class="dot"></span><span class="agent-text">آماده</span></span></div>
+      <div class="nowline" hidden></div>
+      <div class="pb">
+        <div class="lane motion" id="laneMotion"><div class="lane-h"><div class="ic" data-icon="sparkle"></div><div>موشن<br><small>انیمیشن و موشن‌گرافیک</small></div><span class="cnt num">۰</span></div><div class="lane-body" style="display:flex;flex-direction:column;gap:.5rem"></div></div>
+        <div class="lane filmed" id="laneFilmed"><div class="lane-h"><div class="ic" data-icon="camera"></div><div>ضبط ویدئو<br><small>فیلم‌برداری با دوربین یا موبایل</small></div><span class="cnt num">۰</span></div><div class="lane-body" style="display:flex;flex-direction:column;gap:.5rem"></div></div>
+        <div class="empty" id="prodEmpty"><div class="ic" data-icon="clap"></div>هنوز ایده‌ای تأیید نشده.<br>کارفرما از ستون وسط <b>تأیید</b> می‌زنه و ایده این‌جا میاد.</div>
+        <details class="gone-list" id="goneList" hidden><summary>حذف‌شده از ایده‌های ساخت <span class="num" id="goneCnt"></span></summary><div id="goneBody"></div></details>
+      </div>
+      <div class="pf"><span class="copy">© tarfandhaye.ai</span><span>پیش‌تولید، استوری‌بورد، تولید</span></div>
+    </section>
+  </main>
+
+  <footer class="log">
+    <h3>گزارش زنده</h3>
+    <ol id="log"></ol>
+    <div class="notice"><span class="copy">© tarfandhaye.ai</span> · © ۱۴۰۵ Tarfandhaye.ai — همه‌ی حقوق محفوظ است. فقط برای استفاده‌ی شخصی.</div>
+  </footer>
+</div>
+<div class="overlay" id="overlay" hidden><div class="drawer" id="drawer" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" hidden></div>
+<div class="offline" id="offline" hidden>داشبورد به اسکیل وصل نیست. این صفحه را با فرمان <b>dashboard</b> باز کن.</div>
+
+<script>/* online mode: this file is an export (export.py). The same dashboard runs here without the local server.
+   Every client action (approve, delete, storyboard decision, reel link, new benchmark, brand request, brand inputs) is one
+   "item". Published as an Artifact with the db capability, items live in the shared collection "actions": everyone who
+   opens the page sees them live and Claude reads them back (import-pack --dir). Opened anywhere else, items stay in this
+   browser and leave as the "پیام برای Claude" pack. */
+window.__ILAB_STATIC__ = /*ILAB_STATIC*/null;
+(function () {
+  const S = window.__ILAB_STATIC__;
+  if (!S) return;
+  const realFetch = window.fetch.bind(window);
+  const KEY = "ilab-online-" + S.id;
+  const $ = id => document.getElementById(id);
+  const L = {cur: {brand: S.active.brand, platform: S.active.platform}, items: {}};   // this browser: what it shows and (offline) what it decided
+  const R = {items: {}, status: {}, on: false, uid: null, assets: null, col: null};     // the shared store, when there is one
+  let ver = 1;
+  const keep = {
+    async get() { try { const v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+    async set() { try { localStorage.setItem(KEY, JSON.stringify(L)); } catch (e) { /* in memory only: the pack button still works */ } }
+  };
+  const ready = keep.get().then(saved => {
+    if (saved && saved.cur) { L.cur = saved.cur; L.items = saved.items || {}; }
+    if (!brandExists(L.cur.brand)) L.cur.brand = S.active.brand;
+  });
+  const nowIso = () => new Date().toISOString();
+  const hash = s => { let h = 5381; for (const c of String(s)) h = ((h * 33) ^ c.codePointAt(0)) >>> 0; return h.toString(36); };
+  const webBrands = () => {   // brands registered on this page that the work folder has not exported yet
+    const out = new Map();
+    for (const x of live()) {
+      if (x.t === "brand_add" && x.wid && !S.states[x.wid]) out.set(x.wid, x);
+      if (x.t === "brand_remove") out.delete(x.brand);
+    }
+    return out;
+  };
+  const brandExists = b => !!(S.states[b] || webBrands().has(b));
+  function emptyState(x, p) {
+    const t = JSON.parse(JSON.stringify((S.states[S.order[0]] || {})[p]));
+    const link = x.page_link || "";
+    const handle = (link.match(/instagram\.com\/([\w.]+)/) || [])[1];
+    t.board = {ideas: [], scan: {}}; t.decisions = {ideas: {}, storyboards: {}}; t.inbox = []; t.brief = {}; t.benchmark = {}; t.benchmarks = {}; t.mode = "strategy";
+    t.page = {name: x.name, handle: handle ? "@" + handle : "", url: /instagram\.com/.test(link) ? link : "", niche: x.niche || "", visual: {palette: []},
+      youtube: {url: x.youtube || ""}, linkedin: {url: x.linkedin || ""}, strategy: {}};
+    t.platforms = {instagram: {ideas: 0, approved: 0}, youtube: {ideas: 0, approved: 0}, linkedin: {ideas: 0, approved: 0}};
+    return t;
+  }
+  const baseOf = (b, p) => S.states[b] ? S.states[b][p] : webBrands().has(b) ? emptyState(webBrands().get(b), p) : (S.states[S.order[0]] || {})[p];
+  const baseState = () => baseOf(L.cur.brand, L.cur.platform);
+  const titleOf = (b, p, id) => { const s = baseOf(b, p); const i = s && s.board.ideas.find(x => x.id === id); return i ? i.title : id; };
+  const brandName = b => { const w = webBrands().get(b); if (w) return w.name; const st = baseOf(b, "instagram"); const it = st && (st.brands || []).find(x => x.id === b); return it ? it.name : b; };
+  const PL_FA = {instagram: "اینستاگرام", youtube: "یوتیوب", linkedin: "لینکدین"};
+  const done_ = S.applied || {};   // items the work folder already took in (their time): not pending any more
+  const live = () => Object.entries(R.on ? R.items : L.items).filter(([k, x]) => x && !x.applied && !(done_[k] && done_[k] >= x.at))
+    .map(([, x]) => x).sort((a, b) => String(a.at).localeCompare(String(b.at)));
+
+  function describe(x) {
+    const t = "«" + titleOf(x.brand, x.platform, x.id) + "»";
+    switch (x.t) {
+      case "decide": return t + " " + ({approve: "تأیید شد", approve_alt: "جایگزین تأیید شد", delete: "از ایده‌های ساخت حذف شد", restore: "برگشت به صف تصمیم"})[x.action];
+      case "storyboard": return "استوری‌بورد " + t + ": " + ({approve: "تأیید شد ← تولید", revise: "نیاز به اصلاح" + (x.note ? " (" + x.note + ")" : ""), reset: "تصمیم برداشته شد"})[x.action];
+      case "inbox": return "لینک ریل تازه: " + x.url;
+      case "benchmark": return x.cancel ? "درخواست بنچ‌مارک لغو شد (" + (PL_FA[x.platform] || x.platform) + ")" : "بنچ‌مارک جدید: " + (PL_FA[x.platform] || x.platform) + " · " + ({ir: "پیج‌های ایرانی", intl: "پیج‌های خارجی", both: "ایرانی و خارجی"})[x.region || "both"];
+      case "mode": return "روش بررسی: " + (x.mode === "login" ? "با لاگین" : "با سند استراتژی");
+      case "brief": return "ورودی برند رسید" + ((x.files || []).length ? " (" + x.files.length + " فایل)" : "");
+      case "brand_add": return "برند تازه ساخته شد: «" + x.name + "»";
+      case "brand_remove": return "برند «" + brandName(x.brand) + "» از فهرست برداشته شد";
+    }
+    return x.t;
+  }
+
+  const stamp = r => String((r || {}).queued_at || (r || {})[((r || {}).status || "") + "_at"] || (r || {}).at || "");
+  function benchOf(brand) {   // {platform: request} for one brand, newest information wins
+    const out = {};
+    for (const pl of Object.keys(PL_FA)) {
+      const base = baseOf(brand, pl) || {};
+      out[pl] = JSON.parse(JSON.stringify((base.benchmarks || {})[pl] || base.benchmark || {}));
+    }
+    for (const x of live()) if (x.t === "benchmark" && x.brand === brand && PL_FA[x.platform])
+      out[x.platform] = x.cancel ? {status: "cancelled", cancelled_at: x.at} : {status: "queued", queued_at: x.at, platform: x.platform, mode: x.mode, region: x.region || "both", max_age: x.max_age || 180};
+    for (const [k, d] of Object.entries(R.status)) {
+      const st = (d || {}).benchmark, pl = (d || {}).platform || (st || {}).platform || "instagram";
+      if (!st || (d.brand || k.split("~")[0]) !== brand || !PL_FA[pl]) continue;
+      if (String(st.at) >= stamp(out[pl])) out[pl] = Object.assign({}, out[pl], {status: st.status, [st.status + "_at"]: st.at, msg: st.msg});
+    }
+    return out;
+  }
+  const anyBusy = m => Object.values(m).some(r => r && (r.status === "queued" || r.status === "running"));
+  function compose() {
+    const o = JSON.parse(JSON.stringify(baseState()));
+    const b = L.cur.brand, p = L.cur.platform, removed = new Set();
+    for (const x of live()) {
+      if (x.t === "brand_remove") { removed.add(x.brand); continue; }
+      if (x.brand !== b) continue;
+      if (x.t === "benchmark") continue;   // see benchOf
+      if (x.t === "mode") { o.mode = x.mode; continue; }
+      if (x.t === "brief") { o.brief = {page_link: x.page_link, samples: x.samples || [], text: x.text || "", at: x.at, by: "dashboard", read: false, files: (x.files || []).map(f => ({name: f.name, size: f.size}))}; continue; }
+      if (x.platform !== p) continue;
+      if (x.t === "decide") {
+        if (x.action === "restore") delete o.decisions.ideas[x.id];
+        else o.decisions.ideas[x.id] = {status: {approve: "approved", approve_alt: "approved_alt", delete: "deleted"}[x.action], at: x.at, by: "client", note: x.note};
+        if (x.action === "delete" || x.action === "restore") delete o.decisions.storyboards[x.id];
+      } else if (x.t === "storyboard") {
+        if (x.action === "reset") delete o.decisions.storyboards[x.id];
+        else o.decisions.storyboards[x.id] = {status: x.action === "approve" ? "approved" : "revise", at: x.at, by: "client", note: x.note};
+      } else if (x.t === "inbox" && !(o.inbox || []).some(i => i.url === x.url)) {
+        (o.inbox = o.inbox || []).push({id: "r" + (o.inbox.length + 1), url: x.url, note: x.note || "", by: "dashboard", at: x.at, status: "new"});
+      }
+    }
+    o.benchmarks = benchOf(b);
+    o.benchmark = o.benchmarks[p] || {};
+    const approved = Object.values(o.decisions.ideas).filter(v => v.status === "approved" || v.status === "approved_alt").length;
+    if (o.platforms && o.platforms[p]) o.platforms[p].approved = approved;
+    o.brands = (o.brands || []).filter(x => !removed.has(x.id) || x.id === b);
+    for (const [wid, x] of webBrands())
+      o.brands.push({id: wid, name: x.name, handle: emptyState(x, p).page.handle, active: false, platforms: {}, strategy: false});
+    for (const br of o.brands) {
+      br.active = br.id === b;
+      const m = br.id === b ? o.benchmarks : benchOf(br.id);
+      br.benchmarks = m;
+      br.benchmark = anyBusy(m) ? {status: Object.values(m).some(r => r && r.status === "running") ? "running" : "queued"} : m[p] || {};
+      if (br.id === b && br.platforms && br.platforms[p]) br.platforms[p].approved = approved;
+    }
+    o.platform = p; o.brand = b;
+    o.rev = "o" + ver + "|" + b + "|" + p;
+    return o;
+  }
+
+  function eventsOf(b) {
+    const own = live().filter(x => x.brand === b || x.t === "brand_add").map(x => ({t: Date.parse(x.at) / 1000 || 0, agent: "client", type: x.t, msg: describe(x), data: {id: x.id}, demo: !!S.demo}));
+    for (const d of Object.values(R.status)) {
+      const st = (d || {}).benchmark;
+      if (st && st.msg && d.brand === b) own.push({t: Date.parse(st.at) / 1000 || 0, agent: "scout", type: "benchmark", msg: st.msg, data: {}});
+    }
+    own.sort((x, y) => x.t - y.t);
+    return (S.events[b] || []).concat(own).map((e, i) => Object.assign({}, e, {i}));
+  }
+
+  /* one item → the shared store (when there is one) or this browser */
+  async function commit(key, item) {
+    item = Object.assign({}, item, {at: nowIso(), applied: false});
+    Object.keys(item).forEach(k => item[k] === undefined && delete item[k]);
+    if (R.on) {
+      if (R.uid) item.by = R.uid;
+      R.items[key] = item;   // shown at once; the live snapshot confirms it
+      try { await R.col.doc(key).set(item); }
+      catch (e) {
+        delete R.items[key];
+        if (e && e.code === "invalid_argument") {   // a viewer who may only look: keep their choices here and offer the pack
+          R.on = false; L.items[key] = item; showMode();
+          return "ثبت آنلاین برات باز نیست (دسترسی فقط دیدنه). انتخابت توی همین مرورگر ماند؛ «پیام برای Claude» رو بزن.";
+        }
+        throw new Error(e && e.code === "quota_exceeded" ? "جای دیتابیس پره؛ به صاحب داشبورد بگو" : "ثبت نشد، دوباره بزن");
+      }
+    } else {
+      L.items[key] = item;
+    }
+    ver++; await keep.set();
+    return null;
+  }
+
+  const reply = (obj, code) => new Response(JSON.stringify(obj), {status: code || 200, headers: {"Content-Type": "application/json"}});
+  const fail = (msg, code) => reply({ok: false, error: msg}, code || 400);
+  async function done(key, item, extra) {
+    let note = null;
+    try { if (key) note = await commit(key, item); else { ver++; await keep.set(); } }
+    catch (e) { return fail(e.message); }
+    const out = Object.assign({ok: true, state: compose()}, extra || {});
+    if (note) setTimeout(() => toastMsg(note), 2700);
+    return reply(out);
+  }
+  const REEL = /^https:\/\/((www|m|vm|vt)\.)?(instagram\.com|youtube\.com|youtu\.be|tiktok\.com|[a-z]{2,3}\.linkedin\.com|linkedin\.com|lnkd\.in)\//i;
+  const UPLOADABLE = /\.(pdf|png|jpe?g|webp|txt|md|csv|json)$/i;
+
+  window.fetch = async function (url, opts) {
+    const [path, qs] = String(url).split("?");
+    if (!path.startsWith("/api/")) return realFetch(url, opts);
+    await ready;
+    const body = opts && opts.body ? JSON.parse(opts.body) : {};
+    const note = String(body.note || "").trim().slice(0, 500) || undefined;
+    const b = L.cur.brand, p = L.cur.platform;
+    const idea = () => baseState().board.ideas.find(i => i.id === body.id);
+    if (path === "/api/state") {
+      const st = compose();
+      return reply(new URLSearchParams(qs || "").get("rev") === st.rev ? {same: true} : st);
+    }
+    if (path === "/api/events") {
+      const since = +new URLSearchParams(qs || "").get("since") || 0, all = eventsOf(b);
+      return reply({events: all.slice(since), next: all.length, brand: b});
+    }
+    if (path === "/api/decide") {
+      const i = idea(), a = body.action;
+      if (!i || !["approve", "approve_alt", "delete", "restore"].includes(a)) return fail("unknown action", 404);
+      if (a === "approve_alt" && !(i.qc && i.qc.alternative)) return fail("no alternative");
+      return done("d~" + b + "~" + p + "~" + i.id, {t: "decide", brand: b, platform: p, id: i.id, action: a, note});
+    }
+    if (path === "/api/storyboard") {
+      const i = idea(), a = body.action;
+      if (!i || !i.storyboard || !["approve", "revise", "reset"].includes(a)) return fail("no storyboard");
+      return done("s~" + b + "~" + p + "~" + i.id, {t: "storyboard", brand: b, platform: p, id: i.id, action: a, note});
+    }
+    if (path === "/api/platform") {
+      if (!PL_FA[body.platform]) return fail("unknown platform");
+      L.cur.platform = body.platform;
+      return done();
+    }
+    if (path === "/api/brand/select") {
+      if (!brandExists(body.id)) return fail("unknown brand", 404);
+      L.cur.brand = body.id;
+      return done();
+    }
+    if (path === "/api/mode") {
+      if (!["strategy", "login"].includes(body.mode)) return fail("unknown mode");
+      return done("m~" + b, {t: "mode", brand: b, mode: body.mode});
+    }
+    if (path === "/api/benchmark") {   // {platforms: [...], region} — one request per platform
+      const plats = (body.platforms || [p]).filter(x => PL_FA[x]);
+      const region = ["ir", "intl", "both"].includes(body.region) ? body.region : "both";
+      const now = compose(), queued = [], busy = [];
+      let note = null;
+      try {
+        for (const pl of plats) {
+          const cur = (now.benchmarks[pl] || {}).status;
+          if (body.cancel) { if (cur === "queued") { note = note || await commit("b~" + b + "~" + pl, {t: "benchmark", brand: b, platform: pl, cancel: true}); queued.push(pl); } continue; }
+          if (cur === "queued" || cur === "running") { busy.push(pl); continue; }
+          note = note || await commit("b~" + b + "~" + pl, {t: "benchmark", brand: b, platform: pl, mode: now.mode, region, max_age: [180, 365, 730].includes(+body.max_age) ? +body.max_age : 180});
+          queued.push(pl);
+        }
+      } catch (e) { return fail(e.message); }
+      if (!body.cancel && busy.length && !queued.length) return fail("بنچ‌مارک " + busy.map(x => PL_FA[x]).join("، ") + " از قبل در جریانه", 409);
+      if (note) setTimeout(() => toastMsg(note), 2700);
+      return reply({ok: true, queued, busy, state: compose()});
+    }
+    if (path === "/api/inbox") {
+      const u = String(body.url || "").trim();
+      if (!REEL.test(u)) return fail("لینک ریل اینستاگرام، ویدیوی یوتیوب، پست لینکدین یا تیک‌تاک نیست");
+      if ((compose().inbox || []).some(x => x.url === u)) return fail("این لینک قبلاً اضافه شده", 409);
+      return done("i~" + b + "~" + p + "~" + hash(u), {t: "inbox", brand: b, platform: p, url: u, note});
+    }
+    if (path === "/api/brief") {
+      const samples = String(body.samples || "").split("\n").map(s => s.trim()).filter(s => s.startsWith("http")).slice(0, 30);
+      const text = String(body.text || "").trim().slice(0, 20000), link = String(body.page_link || "").trim().slice(0, 300);
+      const files = [];
+      for (const f of (body.files || []).slice(0, 10)) {
+        if (!R.on || !R.assets) return fail("فایل فقط توی داشبورد آنلاینِ Claude فرستاده می‌شه؛ اینجا توضیح متنی بنویس یا فایل رو توی چت به Claude بده.");
+        if (!UPLOADABLE.test(f.name || "")) return fail("این نوع فایل آنلاین پذیرفته نمی‌شه (PDF، عکس یا متن بفرست؛ Word رو PDF کن): " + f.name);
+        try {
+          const bin = Uint8Array.from(atob(String(f.data || "")), c => c.charCodeAt(0));
+          const up = await R.assets.upload(new Blob([bin], {type: /\.pdf$/i.test(f.name) ? "application/pdf" : /\.(png)$/i.test(f.name) ? "image/png" : /\.jpe?g$/i.test(f.name) ? "image/jpeg" : /\.webp$/i.test(f.name) ? "image/webp" : "text/plain"}));
+          files.push({name: f.name, size: bin.length, asset: up.id});
+        } catch (e) { return fail("فایل «" + f.name + "» بالا نرفت" + (e && e.code === "not_granted" ? " (اجازه‌ی آپلود نداری)" : "")); }
+      }
+      if (!(link || samples.length || text || files.length)) return fail("چیزی برای ثبت نیست");
+      return done("f~" + b, {t: "brief", brand: b, page_link: link, samples, text, files});
+    }
+    if (path === "/api/brand/add") {
+      const name = String(body.name || "").trim().slice(0, 80);
+      if (!name) return fail("اسم برند لازمه");
+      if (compose().brands.some(x => String(x.name).trim() === name)) return fail("برندی به این اسم از قبل هست", 409);
+      const wid = "w-" + hash(name + "|" + nowIso()).slice(0, 12);
+      const res = await done("a~" + wid, {t: "brand_add", wid, brand: wid, name, page_link: String(body.page_link || "").slice(0, 300),
+        youtube: String(body.youtube || "").slice(0, 300), linkedin: String(body.linkedin || "").slice(0, 300), niche: String(body.niche || "").slice(0, 200),
+        text: String(body.text || "").slice(0, 20000)});
+      if (!res.ok) return res;
+      L.cur.brand = wid;   // open the new brand right away
+      if (body.benchmark) return done("b~" + wid + "~" + L.cur.platform, {t: "benchmark", brand: wid, platform: L.cur.platform, mode: "strategy", region: "both"});
+      return done();
+    }
+    if (path === "/api/brand/remove") {
+      if (!brandExists(body.id)) return fail("unknown brand", 404);
+      if (compose().brands.length <= 1) return fail("آخرین برند ردیف حذف نمی‌شه");
+      if (L.cur.brand === body.id) L.cur.brand = compose().brands.find(x => x.id !== body.id).id;
+      return done("r~" + body.id, {t: "brand_remove", brand: body.id});
+    }
+    return fail("not found", 404);
+  };
+
+  /* the pack: for a copy opened outside the online dashboard */
+  function packText() {
+    const its = live();
+    const human = its.length ? its.map((x, n) => (n + 1) + ". " + (x.brand ? brandName(x.brand) + " · " : "") + describe(x)).join("\n") : "(هنوز تصمیمی نگرفتم)";
+    const data = {v: 1, items: its.map(x => { const c = Object.assign({}, x); delete c.applied; delete c.by; return c; })};
+    return "[Social Idea Lab · تصمیم‌های من]\n" + human + "\n\nبا اسکیل social-idea-lab این تصمیم‌ها رو اعمال کن (import-pack)، بعد کار رو ادامه بده و داشبورد رو به‌روز کن.\n\nILAB-PACK\n" + JSON.stringify(data);
+  }
+  function toastMsg(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(t._t); t._t = setTimeout(() => t.hidden = true, 3600); }
+  async function copyPack() {
+    const text = packText();
+    try { await navigator.clipboard.writeText(text); toastMsg("کپی شد ✓ حالا توی چت با Claude بچسبون"); }
+    catch (e) { const ta = $("packBox"); ta.value = text; ta.hidden = false; ta.select(); toastMsg("کپی خودکار نشد؛ متن رو انتخاب کردم، خودت کپی کن (Ctrl+C)"); }
+  }
+  function showMode() {
+    $("onlineNote").hidden = false;
+    $("onlineText").textContent = R.on
+      ? "برند رو انتخاب کن، روی هر پلتفرم بزن و «شروع جستجو با Claude». هر پلتفرم تموم شد، همین‌جا میاد."
+      : "این یه نسخه‌ی جداست: تأیید و حذف‌ها توی همین مرورگر می‌مونه. وقتی تصمیم گرفتی «پیام برای Claude» رو بزن و متنش رو توی چت بچسبون.";
+    $("packBtn").hidden = R.on;
+  }
+  $("packBtn").addEventListener("click", copyPack);
+  if (S.demo) $("demo").hidden = false;
+  showMode();
+
+  /* the shared store: only inside the published Artifact; anywhere else claude is absent and the page stays in this browser */
+  const C = window.claude;
+  if (C && typeof C.use === "function") {
+    (async () => {
+      const db = await C.use("db");
+      if (!db) return;
+      const user = await C.use("user");
+      R.uid = user ? await user.id() : null;
+      R.assets = await C.use("assets");
+      R.col = db.collection("actions");
+      R.col.onSnapshot(snap => {
+        const next = {};
+        for (const d of snap.docs) if (d.exists) next[d.id] = d.data();
+        R.items = next; R.on = true; ver++; showMode();
+      }, () => { R.on = false; showMode(); });
+      db.collection("status").onSnapshot(snap => {   // written by Claude: benchmark started / finished
+        const next = {};
+        for (const d of snap.docs) if (d.exists) next[d.id] = d.data();
+        R.status = next; ver++;
+      }, () => {});
+    })();
+  }
+})();
+</script>
+<script>
+(() => {
+"use strict";
+const S = (p) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + p + '</svg>';
+const ICONS = {
+  search: S('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>',
+  shield: S('<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/>'),
+  clap: S('<rect x="3" y="9" width="18" height="11" rx="2"/><path d="m3 9 2.5-5 15 3L21 9"/><path d="m8 4.6 1.5 4.4M13 5.6 14.5 9"/>'),
+  user: S('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'),
+  check: S('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
+  x: S('<path d="M6 6l12 12M18 6 6 18"/>'),
+  warn: S('<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>'),
+  swap: S('<path d="M7 7h11l-3-3M17 17H6l3 3"/>'),
+  trash: S('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  undo: S('<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>'),
+  doc: S('<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8.5 13h7M8.5 17h5"/>'),
+  board: S('<rect x="3" y="4" width="5" height="9" rx="1"/><rect x="9.5" y="4" width="5" height="9" rx="1"/><rect x="16" y="4" width="5" height="9" rx="1"/><path d="M3 17h18M3 20h12"/>'),
+  film: S('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/>'),
+  sparkle: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9z"/><path d="M19 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>',
+  camera: S('<path d="M15 10l5-3v10l-5-3z"/><rect x="3" y="6" width="12" height="12" rx="2"/>'),
+  eye: S('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  heart: S('<path d="M12 20s-7-4.4-9-9.2C1.7 7.4 4 4.5 7.1 4.5c2 0 3.4 1.1 4.9 3 1.5-1.9 2.9-3 4.9-3 3.1 0 5.4 2.9 4.1 6.3C19 15.6 12 20 12 20z"/>'),
+  comment: S('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/>'),
+  send: S('<path d="M21.5 3 10 14.5"/><path d="M21.5 3 15 21l-5-6.5L3 9.8z"/>'),
+  save: S('<path d="M6 3h12v18l-6-4-6 4z"/>'),
+  brain: S('<path d="M9.5 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5.2A3 3 0 0 0 7 17a3 3 0 0 0 5 2V5.5A2.5 2.5 0 0 0 9.5 4z"/><path d="M14.5 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5.2A3 3 0 0 1 17 17a3 3 0 0 1-5 2"/>'),
+  palette: S('<path d="M12 3a9 9 0 0 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-1.4-1.2-1.7-1.2-2.9 0-.9.7-1.4 1.6-1.4H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>'),
+  pin: S('<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'),
+  box: S('<path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/>'),
+  laptop: S('<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/>'),
+  folder: S('<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
+  clock: S('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  print: S('<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/>'),
+  ig: S('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/>'),
+  yt: S('<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9 5 3-5 3z" fill="currentColor"/>'),
+  tt: S('<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.6 2.2 4.2 5 4.5"/>'),
+  li: S('<rect x="3" y="3" width="18" height="18" rx="3.5"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.2c0-1.6 1-2.7 2.4-2.7 1.5 0 2.1 1 2.1 2.7V17"/>'),
+  link: S('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.4-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5Z"/></svg>',
+  pencil: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m14 6 4 4"/>'),
+  phone: S('<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>'),
+  key: S('<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/>'),
+  upload: S('<path d="M12 15V4m0 0-4 4m4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>'),
+  plus: S('<path d="M12 5v14M5 12h14"/>'),
+  copy: S('<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9.5a1 1 0 0 0 1 1h3.5"/>'),
+  target: S('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor"/>'),
+  arrow: S('<path d="M19 12H5m6-6-6 6 6 6"/>'),
+  sun: S('<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>'),
+  moon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>'
+};
+document.querySelectorAll("[data-icon]").forEach(e => e.innerHTML = ICONS[e.dataset.icon] || "");
+
+const params = new URLSearchParams(location.search);
+
+/* theme switch: dark (default) ↔ light; the viewer's choice is remembered in this browser */
+function applyTheme(t, save) {
+  const light = t === "light";
+  document.documentElement.dataset.theme = light ? "light" : "dark";
+  document.getElementById("themeLabel").textContent = light ? "تم روشن" : "تم تیره";
+  document.getElementById("themeKnob").innerHTML = ICONS[light ? "sun" : "moon"];
+  const b = document.getElementById("themeBtn");
+  b.setAttribute("aria-pressed", String(light));
+  b.title = light ? "برگشت به تم تیره" : "روشن کردن رنگ داشبورد";
+  if (save) { try { localStorage.setItem("ilab-theme", light ? "light" : "dark"); } catch (e) { /* private window: just don't remember */ } }
+}
+applyTheme(document.documentElement.dataset.theme || "dark", false);
+document.getElementById("themeBtn").addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light", true));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const nf = new Intl.NumberFormat("fa-IR");
+const nf1 = new Intl.NumberFormat("fa-IR", {maximumFractionDigits: 1});
+const nfc = new Intl.NumberFormat("fa-IR", {notation: "compact", maximumFractionDigits: 1});
+const num = n => (n == null || n === "" || isNaN(n)) ? "—" : (Math.abs(n) >= 10000 ? nfc.format(n) : nf.format(n));
+const pct = n => (n == null || isNaN(n)) ? "—" : nf1.format(n) + "٪";
+const fa = n => nf.format(n);
+const $ = id => document.getElementById(id);
+const timeFmt = new Intl.DateTimeFormat("fa-IR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false});
+
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k === "html") e.innerHTML = v;            // only ever our own ICONS / shot sketches
+    else if (k === "style") e.style.cssText = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false) continue;
+    e.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+  }
+  return e;
+}
+const ic = (name, extra) => el("span", {class: "i" + (extra ? " " + extra : ""), html: ICONS[name] || ""});
+const HEX = /^#[0-9a-f]{3,8}$/i;
+const color = (c, d) => (typeof c === "string" && HEX.test(c.trim())) ? c.trim() : d;
+const safeImg = u => typeof u === "string" && (/^https:\/\/([\w-]+\.)*(cdninstagram\.com|fbcdn\.net|ytimg\.com|ggpht\.com|googleusercontent\.com|tiktokcdn\.com|tiktokcdn-us\.com|licdn\.com)\//.test(u) || /^\/ws\//.test(u) || /^data:image\/(png|jpeg|webp|svg\+xml);base64,/.test(u)) ? u : null;
+const safeLink = u => typeof u === "string" && (/^https:\/\/((www|m)\.)?(instagram\.com|youtube\.com|youtu\.be|tiktok\.com|lnkd\.in)\//.test(u) || /^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//.test(u)) ? u : null;
+
+/* ---------- state ---------- */
+const D = {rev: "", page: {}, board: {ideas: [], scan: {}}, decisions: {ideas: {}, storyboards: {}}, demo: false, platform: "", platforms: {}, inbox: []};
+const L = {next: 0, log: [], ready: false, active: {page: 0, scout: 0, qc: 0, client: 0, prod: 0}, now: {}};
+const UI = {open: null, tab: "qc", note: "", busy: new Set(), loaded: false};
+
+/* ---------- platform (Instagram / YouTube / LinkedIn): same flow, its own ideas ---------- */
+const PLATS = {
+  instagram: {name: "اینستاگرام", unit: "ریل", units: "ریل‌ها", src: "پیج منبع", ph: "https://www.instagram.com/reel/…",
+    help: "توی اپ اینستاگرام روی ریل ← Share ← Copy link بزن و این‌جا بچسبون. بدون لاگین؛ Claude خودش ریل رو می‌خونه."},
+  youtube: {name: "یوتیوب", unit: "ویدیو", units: "ویدیوها", src: "کانال منبع", ph: "https://www.youtube.com/shorts/… یا watch?v=…",
+    help: "توی اپ یوتیوب روی ویدیو ← Share ← Copy link بزن و این‌جا بچسبون. Claude خودش ویدیو رو می‌خونه."},
+  linkedin: {name: "لینکدین", unit: "پست", units: "پست‌ها", src: "پیج یا پروفایل منبع", ph: "https://www.linkedin.com/posts/… یا feed/update/urn:li:activity:…",
+    help: "توی اپ لینکدین روی پست ← … ← Copy link to post بزن و این‌جا بچسبون. Claude فقط پست‌های عمومی رو می‌خونه."}
+};
+const PL = () => PLATS[D.platform] || PLATS.instagram;
+// LinkedIn calls likes "reactions" and shares "reposts"
+const MLBL = i => (i.platform || D.platform) === "linkedin" ? {likes: "ری‌اکشن", shares: "ری‌پست", sharesLong: "ری‌پست (Repost)"} : {likes: "لایک", shares: "اشتراک", sharesLong: "اشتراک (شیر)"};
+const NO_SHARE = "تعداد اشتراک روی این پلتفرم یا این پست عمومی نیست؛ حدس زده نمی‌شه";
+function openBench(pl) { UI.bench = {plats: new Set([pl]), lock: pl, region: "both", window: 180}; openDrawer("@bench"); }
+document.querySelectorAll("#platSw button").forEach(b => b.addEventListener("click", async () => {
+  const pl = b.dataset.pl, wasOn = pl === D.platform;
+  if (!wasOn) { closeDrawer(); if (!await post("/api/platform", {platform: pl})) return; }
+  const st = ((D.benchmarks || {})[pl] || {}).status;
+  const n = ((D.platforms || {})[pl] || {}).ideas || 0;
+  if (st === "queued" || st === "running") toast(PLATS[pl].name + ": Claude داره جستجو می‌کنه؛ نتیجه همین‌جا میاد");
+  else if (!n || wasOn) openBench(pl);   // never benchmarked, or a second click: the form
+}));
+/* ---------- research mode: signed-in browser (read only) or brand documents (no login) ---------- */
+const MODES = {
+  login: {name: "بررسی با لاگین", note: "مرورگر با حساب خودت یا آژانس لاگینه (نه حساب برند). Claude فقط می‌خونه و هیچ کاری با حساب نمی‌کنه؛ عددها کامل‌ترن: لایک، کامنت، ری‌پست، اشتراک، جستجو و هشتگ."},
+  strategy: {name: "بررسی با سند استراتژی", note: "بدون هیچ لاگینی. Claude از سند استراتژی، لینک پیج، نمونه پست‌ها و توضیح متنی شروع می‌کنه و صفحه‌های عمومی رو مثل یه بازدیدکننده می‌بینه."}
+};
+document.querySelectorAll("#modeSw button").forEach(b => b.addEventListener("click", async () => {
+  if (b.dataset.mode === D.mode) return;
+  const ok = await post("/api/mode", {mode: b.dataset.mode});
+  if (ok) toast(MODES[b.dataset.mode].name + (b.dataset.mode === "strategy" ? " — ورودی‌ها رو از کارت پیج رفرنس بفرست" : " — فقط حساب خودت، نه حساب برند"));
+}));
+function renderMode() {
+  document.querySelectorAll("#modeSw button").forEach(b => b.classList.toggle("on", b.dataset.mode === D.mode));
+}
+
+/* ---------- several brands: switch, add, ask Claude for a new benchmark ---------- */
+const BENCH_FA = {queued: "در حال جستجو", running: "در حال جستجو", done: "آخرین بنچ‌مارک", cancelled: "درخواست لغو شد"};
+const shortTime = s => { try { return new Intl.DateTimeFormat("fa-IR", {month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"}).format(new Date(s)); } catch (e) { return ""; } };
+function renderBrands() {
+  const list = D.brands || [];
+  const box = $("brandChips");
+  if (!list.length) { box._nodes = null; box.replaceChildren(el("span", {class: "bstat"}, "هنوز برندی نیست؛ «+ برند» رو بزن")); }
+  else {
+    if (!box._nodes) box.replaceChildren();
+    keyed(box, list, b => b.id, b => JSON.stringify([b.name, b.active, (b.benchmark || {}).status, b.platforms, UI.rm === b.id, list.length]), b => {
+      const p = b.platforms || {}, st = (b.benchmark || {}).status || "";
+      const cnt = Object.keys(PLATS).map(k => [k, ((p[k] || {}).ideas) || 0]);
+      if (UI.rm === b.id) return el("span", {class: "bchipw asking"},   // inline confirm (works the same on phones)
+        el("span", {class: "bask"}, `«${b.name}» حذف بشه؟ از این ردیف می‌ره؛ ` + (b.id === "main" ? "فایل‌هاش پاک نمی‌شه و سر جاش می‌مونه." : "فایل‌هاش پاک نمی‌شه (می‌ره توی بایگانی).")),
+        el("button", {class: "bok", type: "button", onclick: () => removeBrand(b)}, ic("trash"), "حذف"),
+        el("button", {class: "bno", type: "button", onclick: () => askRemove(null)}, "نه"));
+      return el("span", {class: "bchipw"},
+        el("button", {class: "bchip" + (b.active ? " on" : ""), type: "button", title: `${b.handle || b.name} · ` + cnt.map(([k, n]) => `${PLATS[k].name} ${fa(n)} ایده`).join(" · ") + (st ? " · " + (BENCH_FA[st] || st) : ""),
+          onclick: () => selectBrand(b)}, el("span", {class: "bdot " + st}), b.name, el("small", {class: "num"}, cnt.map(([, n]) => fa(n)).join(" · "))),
+        list.length > 1 ? el("button", {class: "bx", type: "button", "aria-label": `حذف برند ${b.name}`, title: `حذف «${b.name}» از این ردیف`,
+          onclick: e => { e.stopPropagation(); askRemove(b.id); }, html: ICONS.x}) : null);
+    }, false);
+  }
+  const bms = D.benchmarks || {};
+  const busyP = Object.keys(PLATS).filter(k => ["queued", "running"].includes((bms[k] || {}).status));
+  const btn = $("benchBtn");
+  $("benchLabel").textContent = "بنچ‌مارک جدید";
+  btn.disabled = !(list.length || D.page.name || D.page.handle);
+  btn.title = "بنچ‌مارک تازه برای «" + (activeBrandName() || "این برند") + "»: پلتفرم‌ها و پیج‌ها رو خودت انتخاب می‌کنی";
+  const stat = $("benchStat");
+  const last = Object.values(bms).filter(b => b && b.status === "done").map(b => b.done_at).sort().pop();
+  stat.className = "bstat " + (busyP.length ? "running" : "");
+  const runP = busyP.filter(k => bms[k].status === "running"), waitP = busyP.filter(k => bms[k].status === "queued");
+  stat.textContent = busyP.length ? "Claude در حال جستجو: " + busyP.map(k => PLATS[k].name).join("، ") : last ? `آخرین بنچ‌مارک · ${shortTime(last)}` : "";
+}
+const activeBrandName = () => ((D.brands || []).find(b => b.active) || {}).name || D.page.name || D.page.handle || "";
+async function selectBrand(b) {
+  if (b.active) { openDrawer("@brand"); return; }
+  closeDrawer();
+  const ok = await post("/api/brand/select", {id: b.id});
+  if (ok) toast("برند: " + b.name);
+}
+$("addBrandBtn").addEventListener("click", () => openDrawer("@newbrand"));
+$("benchBtn").addEventListener("click", () => openBench(D.platform));
+document.getElementById("emptyBench").addEventListener("click", () => openBench(D.platform));
+const REGION_OPTS = [["both", "ایرانی و خارجی", "هم پیج‌های فارسی، هم پیج‌های خارجی؛ تقریباً نصف‌نصف"],
+  ["ir", "فقط ایرانی", "پیج‌های فارسی‌زبان؛ نزدیک‌ترین به مخاطب ایرانی"], ["intl", "فقط خارجی", "پیج‌های خارجی؛ ترندها زودتر اونجا شروع می‌شن"]];
+const BUSY_FA = {queued: "در حال جستجو", running: "در حال جستجو"};
+function paneBench() {
+  const bms = D.benchmarks || {};
+  const busy = k => ["queued", "running"].includes((bms[k] || {}).status);
+  if (!UI.bench) UI.bench = {plats: new Set([D.platform]), lock: D.platform, region: "both", window: 180};
+  const B = UI.bench;
+  const rerender = () => { $("drawer")._sig = null; renderDrawer(); };
+  const opt = (on, off, title, sub, onclick, icon) => el("label", {class: "bopt" + (on ? " on" : "") + (off ? " off" : "")},
+    el("input", {type: "checkbox", checked: on, disabled: off, onchange: onclick}), el("b", null, icon ? ic(icon) : null, title), el("small", null, sub));
+  const platBox = el("div", {class: "bpick"}, Object.entries(PLATS).map(([k, p]) => {
+    const b = bms[k] || {}, isBusy = busy(k);
+    const sub = isBusy ? BUSY_FA[b.status] + " · " + (({ir: "ایرانی", intl: "خارجی", both: "ایرانی و خارجی"})[b.region] || "") :
+      b.status === "done" ? "آخرین بار: " + shortTime(b.done_at) : "هنوز بنچ‌مارک نشده";
+    return opt(B.plats.has(k), isBusy, p.name, sub, () => { B.plats.has(k) ? B.plats.delete(k) : B.plats.add(k); rerender(); }, k === "youtube" ? "yt" : k === "linkedin" ? "li" : "ig");
+  }));
+  const regBox = el("div", {class: "bpick"}, REGION_OPTS.map(([k, t, sub]) => {
+    const l = opt(B.region === k, false, t, sub, () => { B.region = k; rerender(); });
+    l.querySelector("input").type = "radio";
+    return l;
+  }));
+  const winBox = el("div", {class: "bpick"}, [[180, "۶ ماه اخیر", "پیش‌فرض؛ فقط چیزی که الان جواب می‌ده"], [365, "یک سال اخیر", "وقتی حوزه‌ت ریل تازه‌ی کمی داره"],
+    [730, "دو سال اخیر", "عدد ویدیوهای قدیمی بیشتر از زمانه؛ امتیاز با بازدید روزانه حساب می‌شه"]].map(([k, t, sub]) => {
+    const l = opt(B.window === k, false, t, sub, () => { B.window = k; rerender(); });
+    l.querySelector("input").type = "radio";
+    return l;
+  }));
+  const n = B.plats.size;
+  const go = async () => {
+    if (!n) { toast("دست‌کم یه پلتفرم انتخاب کن"); return; }
+    const j = await post("/api/benchmark", {platforms: [...B.plats], region: B.region, max_age: B.window});
+    if (j) {
+      closeDrawer();
+      const names = (j.queued || [...B.plats]).map(k => PLATS[k].name).join("، ");
+      toast(`جستجوی ${names} شروع شد ✓ هر کدوم تموم شد همین‌جا میاد`);
+    }
+  };
+  return el("div", {class: "pane"},
+    B.lock ? null : el("div", {class: "bsec"}, el("h4", null, "کدوم پلتفرم‌ها؟"), el("small", {class: "bsum"}, "هر کدوم جدا انجام می‌شه و هر کدوم زودتر تموم شد، همون لحظه اینجا میاد."), platBox),
+    el("div", {class: "bsec"}, el("h4", null, "از چه پیج‌هایی؟"), regBox),
+    el("div", {class: "bsec"}, el("h4", null, "پست‌های چه بازه‌ای؟"), winBox),
+    el("div", {class: "bsec"}, el("div", {class: "bsum"}, "روش بررسی: ", el("b", null, D.mode === "login" ? "با لاگین (فقط خوندن)" : "با سند استراتژی، بدون لاگین"),
+      " · برند: ", el("b", null, activeBrandName() || "—"))),
+    el("div", {class: "df", style: "border:0;padding:0"},
+      el("button", {class: "btn grad", disabled: !n || (B.lock && busy(B.lock)), onclick: go}, ic("search"),
+        B.lock && busy(B.lock) ? "Claude داره روی همین جستجو می‌کنه…" : B.lock ? "شروع جستجو با Claude" : n ? `شروع جستجو با Claude (${fa(n)} پلتفرم)` : "یه پلتفرم انتخاب کن")));
+}
+UI.nb = {name: "", page_link: "", youtube: "", niche: "", text: ""};
+function paneBrands() {
+  const d = UI.nb;
+  const inp = (key, attrs) => { const e = el(attrs.tag || "input", Object.assign({}, attrs, {tag: null, oninput: ev => d[key] = ev.target.value})); e.value = d[key] || ""; return e; };
+  const send = async () => {
+    if (!d.name.trim()) { toast("اسم برند رو بنویس"); return; }
+    const ok = await post("/api/brand/add", d);
+    if (ok) { UI.nb = {name: "", page_link: "", youtube: "", linkedin: "", niche: "", text: ""}; closeDrawer(); toast("برند اضافه شد ✓ حالا روی هر پلتفرم بزن و بنچ‌مارکش رو شروع کن"); }
+  };
+  const list = D.brands || [];
+  return el("div", {class: "pane"},
+    el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS.plus}), "برند یا پیج تازه",
+      el("small", {style: "font-weight:600;color:var(--faint);margin-inline-start:.4rem"}, "هر برند جدا بررسی می‌شه: ایده‌ها، QC، تصمیم‌ها و بنچ‌مارک خودش")),
+      el("div", {class: "nbform", style: "margin-top:.5rem"},
+        el("label", null, "اسم برند *", inp("name", {placeholder: "مثلاً: کارخانه‌ی …"})),
+        el("label", null, "زمینه‌ی کاری", inp("niche", {placeholder: "مثلاً: لوازم خانگی، مواد غذایی، قطعات خودرو…"})),
+        el("label", null, "لینک پیج اینستاگرام", inp("page_link", {type: "url", class: "ltr", placeholder: "https://www.instagram.com/brand/"})),
+        el("label", null, "لینک کانال یوتیوب (اختیاری)", inp("youtube", {type: "url", class: "ltr", placeholder: "https://www.youtube.com/@brand"})),
+        el("label", null, "لینک پیج لینکدین (اختیاری)", inp("linkedin", {type: "url", class: "ltr", placeholder: "https://www.linkedin.com/company/brand/"})),
+        el("label", {class: "full"}, "توضیح کوتاه (اختیاری)", inp("text", {tag: "textarea", placeholder: "هدف، مخاطب، لحن… سند استراتژی رو بعد از ساختن برند می‌فرستی."})),
+        el("div", {class: "full actions"}, el("button", {class: "btn grad", onclick: send}, ic("plus"), "ساختن برند")))),
+    list.length ? el("div", null, el("div", {class: "sec", style: "margin:.2rem 0 .5rem"}, `برندها (${fa(list.length)})`),
+      el("div", {class: "blist"}, list.map(b => {
+        const p = b.platforms || {}, st = (b.benchmark || {}).status;
+        return el("div", {class: "bcard" + (b.active ? " on" : "")},
+          el("b", null, b.name), el("small", null, [b.handle, b.strategy ? "✓ استراتژی" : "بدون سند استراتژی"].filter(Boolean).join(" · ")),
+          el("small", {class: "num"}, Object.keys(PLATS).map(k => `${PLATS[k].name} ${fa((p[k] || {}).ideas || 0)} ایده`).join(" · ")),
+          el("small", null, st ? `${BENCH_FA[st] || st} · ${shortTime((b.benchmark || {})[st + "_at"])}` : "هنوز بنچ‌مارک نشده"),
+          UI.rm === b.id
+            ? el("div", {class: "rmask"}, el("span", null, b.id === "main"
+                  ? `«${b.name}» از فهرست برداشته بشه؟ چیزی پاک نمی‌شه؛ ایده‌ها و تصمیم‌هاش سر جاشون می‌مونن و فقط از ردیف برندها پنهان می‌شه (Claude با «brand use main» برش می‌گردونه).`
+                  : `«${b.name}» از فهرست برداشته بشه؟ ایده‌ها و تصمیم‌هاش پاک نمی‌شن؛ پوشه‌ش می‌ره توی بایگانی (.lab/archive/brands) و دستی برمی‌گرده.`),
+                el("div", {class: "actions"}, el("button", {class: "btn del", onclick: () => removeBrand(b)}, ic("trash"), "آره، حذف کن"),
+                  el("button", {class: "btn ghost", onclick: () => askRemove(null)}, "نه")))
+            : el("div", {class: "actions"}, b.active ? el("span", {class: "status ok"}, ic("check"), "فعال") : el("button", {class: "btn ghost", onclick: () => selectBrand(b)}, "انتخاب"),
+                list.length < 2 ? null : el("button", {class: "btn ghost rmbtn", "aria-label": `حذف برند ${b.name}`, title: "برداشتن این برند از فهرست (پاک نمی‌شه)", onclick: () => askRemove(b.id)}, ic("trash"), "حذف")));
+      }))) : null);
+}
+function askRemove(id) {
+  UI.rm = id;
+  renderBrands();
+  if (UI.open === "@newbrand") { $("drawer")._sig = null; renderDrawer(); }
+}
+async function removeBrand(b) {
+  const j = await post("/api/brand/remove", {id: b.id});
+  if (j) toast(j.archived ? `برند «${b.name}» حذف شد ✓ پوشه‌ش توی بایگانی هست` : `برند «${b.name}» از ردیف برداشته شد ✓ داده‌هاش سر جاشه`);
+  askRemove(null);
+}
+
+function renderPlatform() {
+  document.querySelectorAll("#platSw button").forEach(b => {
+    b.classList.toggle("on", b.dataset.pl === D.platform);
+    const s = (D.platforms || {})[b.dataset.pl] || {}, c = b.querySelector(".cnt");
+    c.hidden = !s.ideas; c.textContent = fa(s.ideas || 0);
+    const bm = (D.benchmarks || {})[b.dataset.pl] || {}, bs = bm.status, busy = bs === "queued" || bs === "running";
+    let dot = b.querySelector(".busy");
+    if (busy && !dot) { dot = el("span", {class: "busy"}); b.append(dot); }
+    if (!busy && dot) dot.remove();
+    const tag = busy ? "در حال جستجو" : bs === "done" && Date.now() - Date.parse(bm.done_at || 0) < 864e5 ? "تموم شد ✓" : "";
+    let pst = b.querySelector(".pst");
+    if (tag && !pst) { pst = el("span", {class: "pst"}); b.append(pst); }
+    if (pst) { if (tag) { pst.textContent = tag; pst.classList.toggle("done", !busy); } else pst.remove(); }
+    b.title = busy ? "Claude داره جستجو می‌کنه" : s.ideas ? `${fa(s.ideas)} ایده، ${fa(s.approved || 0)} تأییدشده · دوباره بزن تا بنچ‌مارک تازه بگیری` : "بزن تا بنچ‌مارکش رو شروع کنی";
+  });
+  document.body.dataset.platform = D.platform;
+  const p = PL();
+  $("ideasSec").firstChild.textContent = p.units + " ";
+  document.querySelector("#p-scout .ph p").textContent = `${p.name} · مرتب بر اساس امتیاز: بازدید، تعامل، اشتراک و رشد`;
+  $("addUrl").placeholder = p.ph;
+  $("addHelp").textContent = p.help;
+  $("addReelBtn").lastChild.textContent = "لینک " + p.unit;
+}
+
+const dec = i => (D.decisions.ideas || {})[i.id] || {};
+const sbd = i => (D.decisions.storyboards || {})[i.id] || {};
+const approved = i => ["approved", "approved_alt"].includes(dec(i).status);
+const scanning = () => (D.board.scan || {}).status === "scanning";
+const tops = () => scanning() ? [] : D.board.ideas.filter(i => i.top);
+const alt = i => (i.qc || {}).alternative || null;
+const usesAlt = i => dec(i).status === "approved_alt" && !!alt(i);
+const prodTitle = i => usesAlt(i) ? (alt(i).title || i.title) : i.title;
+const prodKind = i => ((i.preprod || {}).kind) || (usesAlt(i) ? (alt(i).kind || i.kind) : i.kind) || null;
+function stageOf(i) {
+  const d = dec(i).status;
+  if (d === "deleted") return "deleted";
+  if (i.done) return "done";
+  if (d === "approved" || d === "approved_alt") {
+    if (i.storyboard && sbd(i).status === "approved") return "production";
+    if (i.storyboard) return "storyboard";
+    if (i.preprod) return "preprod";
+    return "approved";
+  }
+  return i.qc ? "qc" : "candidate";
+}
+const sortedIdeas = () => [...D.board.ideas].sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || (b.views || 0) - (a.views || 0));
+const KIND_FA = {motion: "موشن", filmed: "ضبط ویدئو"};
+const VERDICT = {fit: ["fit", "مناسب", "check"], partial: ["partial", "نیمه‌مناسب", "warn"], unfit: ["unfit", "نامناسب", "x"]};
+
+function kindChip(k) {
+  if (!k) return el("span", {class: "kind none"}, "نامشخص");
+  return el("span", {class: "kind " + k}, ic(k === "motion" ? "sparkle" : "camera"), KIND_FA[k]);
+}
+/* when the video was posted: an old video has had more time to collect views, so the date sits next to every number */
+function postedOf(i) {
+  const d = String(i.posted_on || i.posted || "").slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d + "T12:00:00Z");
+  const at = (D.board.scan || {}).at;
+  if (i.age_days != null && at) return new Date(Date.parse(at) - i.age_days * 86400000);
+  return null;
+}
+const dateFa = new Intl.DateTimeFormat("fa-IR", {year: "numeric", month: "long", day: "numeric"});
+function ageText(dt) {
+  const days = Math.max(0, Math.floor((Date.now() - dt) / 86400000));
+  return days < 1 ? "امروز" : days < 7 ? fa(days) + " روز پیش" : days < 60 ? fa(Math.round(days / 7)) + " هفته پیش" : fa(Math.round(days / 30)) + " ماه پیش";
+}
+function ageChip(i) {
+  const dt = postedOf(i);
+  if (!dt) return el("span", {class: "age none", title: "تاریخ انتشار پیدا نشد؛ عددهاش ممکنه مال مدت طولانی باشه"}, ic("clock"), "تاریخ نامعلوم");
+  const days = (Date.now() - dt) / 86400000;
+  return el("span", {class: "age" + (days > 90 ? " old" : ""), title: "منتشر شده: " + dateFa.format(dt) + (i.vpd ? " · حدود " + fa(Math.round(i.vpd)) + " بازدید در روز" : "") +
+    (days > 90 ? " · بیشتر از ۳ ماهه؛ بخشی از عددها از زمان اومده" : "")}, ic("clock"), ageText(dt));
+}
+function platChip(i) {
+  const p = i.platform || "instagram";
+  const icon = p === "youtube" ? "yt" : p === "linkedin" ? "li" : p === "tiktok" ? "tt" : p === "instagram" ? "ig" : "link";
+  const rg = i.region === "ir" ? el("span", {class: "rg ir", title: "پیج ایرانی / فارسی"}, "ایرانی") : i.region === "intl" ? el("span", {class: "rg intl", title: "پیج خارجی"}, "خارجی") : null;
+  return el("span", {style: "display:inline-flex;align-items:center;gap:.3rem;min-width:0"}, rg,
+    el("span", {class: "plat", title: i.source_name || i.source_page || ""}, ic(icon), i.source_page || i.source_name || "—"));
+}
+function thumbOf(i, cls) {
+  const src = safeImg(i.thumb);
+  return src ? el("img", {class: "thumb" + (cls ? " " + cls : ""), src, alt: "", loading: "lazy", referrerpolicy: "no-referrer"})
+             : el("div", {class: "thumb" + (cls ? " " + cls : "")}, ic("play"));
+}
+function swatches(list) {
+  return el("span", {class: "sw"}, (list || []).slice(0, 6).map(c => el("i", {style: "background:" + color(c, "#777"), title: c})));
+}
+
+/* keyed rendering: unchanged items keep their node; changed ones are rebuilt in place; new ones animate in */
+function keyed(box, items, key, sig, build, animate) {
+  const old = box._nodes || new Map(), next = new Map();
+  let fresh = 0;
+  items.forEach((it, idx) => {
+    const k = key(it), s = sig(it);
+    let n = old.get(k);
+    if (!n || n._sig !== s) {
+      const nn = build(it);
+      nn._sig = s;
+      if (n) { n.replaceWith(nn); if (animate && !reduced) { nn.classList.add("flash"); nn.addEventListener("animationend", () => nn.classList.remove("flash"), {once: true}); } }
+      else if (animate && !reduced) {
+        nn.classList.add("enter"); nn.style.animationDelay = (fresh++ * 70) + "ms";
+        nn.addEventListener("animationend", () => { nn.classList.remove("enter"); nn.style.animationDelay = ""; }, {once: true});
+      }
+      n = nn;
+    }
+    next.set(k, n);
+    if (box.children[idx] !== n) box.insertBefore(n, box.children[idx] || null);
+  });
+  for (const [k, n] of old) if (!next.has(k)) n.remove();
+  box._nodes = next;
+}
+
+/* ---------- top: reference page ---------- */
+const hasStrategy = p => { const s = (p || {}).strategy || {}; return !!(s.summary || s.source || (s.goals || []).length); };
+function renderPage() {
+  const p = D.page || {};
+  const box = $("refpage");
+  if (!p.handle && !p.name && !hasStrategy(p)) { box.hidden = true; return; }
+  box.hidden = false;
+  const s = JSON.stringify([p.handle, p.name, p.followers, p.niche, p.avatar, (p.visual || {}).palette, hasStrategy(p)]);
+  if (box._sig === s) return;
+  box._sig = s;
+  const src = safeImg(p.avatar);
+  const av = src ? el("img", {src, alt: "", referrerpolicy: "no-referrer"}) : el("div", null, (String(p.name || p.handle || "?").replace("@", "").trim()[0] || "?").toUpperCase());
+  const meta = [p.handle ? p.name : null, p.followers != null ? num(p.followers) + " فالوئر" : null, p.niche].filter(Boolean).join(" · ");
+  box.replaceChildren(el("div", {class: "ring"}, av),
+    el("div", {style: "min-width:0"},
+      el("div", {class: "rp-tag"}, "پیج رفرنس", el("span", {class: "stbadge" + (hasStrategy(p) ? "" : " no")}, hasStrategy(p) ? "✓ استراتژی برند" : "بدون سند استراتژی")),
+      el("div", {class: "rp-handle"}, p.handle || p.name || ""), el("div", {class: "rp-meta"}, meta)),
+    swatches((p.visual || {}).palette));
+}
+$("refpage").addEventListener("click", () => openDrawer("@brand"));
+
+/* ---------- brand strategy drawer (no login: from the strategy document and/or the public page) ---------- */
+function paneBrand() {
+  const p = D.page || {}, st = p.strategy || {}, v = p.visual || {}, pr = p.production || {};
+  const list = (arr, cls) => (arr || []).length ? el("div", {class: "tagrow" + (cls ? " " + cls : "")}, arr.map(x => el("span", null, x))) : el("p", {style: "color:var(--faint)"}, "—");
+  const grp = (icon, title, ...body) => el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS[icon]}), title), ...body);
+  const link = safeLink(p.url) || (p.handle ? "https://www.instagram.com/" + String(p.handle).replace("@", "") + "/" : null);
+  const m = MODES[D.mode] || MODES.strategy;
+  return el("div", {class: "pane"},
+    el("div", {class: "modecard" + (D.mode === "login" ? " login" : "")}, el("div", {class: "ic", html: ICONS[D.mode === "login" ? "key" : "doc"]}),
+      el("div", null, el("b", null, "روش بررسی: " + m.name), el("p", null, m.note))),
+    briefForm(),
+    el("div", {class: "srcline"},
+      el("span", {class: "chip"}, ic("doc"), st.source ? "سند: " + st.source : "سند استراتژی داده نشده"),
+      link ? el("span", {class: "chip"}, ic("ig"), el("a", {href: link, target: "_blank", rel: "noopener noreferrer"}, p.handle || link)) : null,
+      el("span", {class: "chip"}, ic("eye"), "پیج بدون لاگین دیده شد")),
+    st.summary ? el("div", {class: "altbox", style: "border-style:solid"}, el("span", {class: "sticker"}, "خلاصه‌ی استراتژی"), el("p", {style: "color:var(--ink);font-size:.9rem;margin-top:.3rem"}, st.summary)) : null,
+    el("div", {class: "brand-grid"},
+      grp("target", "هدف‌ها", list(st.goals)),
+      grp("user", "مخاطب", el("p", null, st.audience || p.audience || "—")),
+      grp("comment", "لحن و صدای برند", el("p", null, st.voice || p.tone || "—")),
+      grp("board", "ستون‌های محتوا", list(st.pillars && st.pillars.length ? st.pillars : p.pillars)),
+      grp("check", "بایدها", list(st.dos, "good")),
+      grp("x", "نبایدها", list(st.donts && st.donts.length ? st.donts : p.dont, "bad")),
+      grp("palette", "سبک بصری", el("p", null, [v.style, v.look, v.fonts].filter(Boolean).join(" · ") || "—"), (v.palette || []).length ? el("div", {style: "margin-top:.45rem"}, swatches(v.palette)) : null),
+      grp("camera", "امکانات تولید", el("p", null, [pr.on_camera, pr.location, pr.equipment, pr.motion_skills].filter(Boolean).join(" · ") || "—")),
+      grp("search", "رقبا و کلمه‌های جستجو", list([...(st.competitors || p.competitors || []), ...(st.keywords || p.keywords || [])])),
+      grp("star", "معیار موفقیت (KPI)", list(st.kpis))));
+}
+
+/* brand inputs: page link, sample posts, free text, documents (PDF, Word, images…) → saved next to the project for Claude */
+UI.brief = {page_link: "", samples: "", text: "", files: []};
+function briefForm() {
+  const b = D.brief || {};
+  const dr = UI.brief;
+  const inp = (key, attrs) => { const e = el(attrs.tag || "input", Object.assign({}, attrs, {tag: null, oninput: ev => dr[key] = ev.target.value})); e.value = dr[key] || ""; return e; };
+  const fileInput = el("input", {type: "file", multiple: true, hidden: true, accept: ".pdf,.doc,.docx,.txt,.md,.rtf,.ppt,.pptx,.jpg,.jpeg,.png,.webp,.zip",
+    onchange: e => { addFiles(e.target.files); e.target.value = ""; }});
+  const list = el("div", {class: "filelist"}, dr.files.map(f => el("span", null, f.name)));
+  const addFiles = fl => {
+    for (const f of fl) {
+      if (f.size > 25 * 1024 * 1024) { toast("حداکثر ۲۵ مگابایت برای هر فایل: " + f.name); continue; }
+      const r = new FileReader();
+      r.onload = () => { dr.files.push({name: f.name, data: String(r.result).split(",")[1] || ""}); list.append(el("span", null, f.name)); };
+      r.readAsDataURL(f);
+    }
+  };
+  const drop = el("div", {class: "drop", onclick: () => fileInput.click(),
+    ondragover: e => { e.preventDefault(); drop.classList.add("over"); }, ondragleave: () => drop.classList.remove("over"),
+    ondrop: e => { e.preventDefault(); drop.classList.remove("over"); addFiles(e.dataTransfer.files); }},
+    ic("upload"), el("span", null, "سند استراتژی، PDF، Word، پاورپوینت یا عکس صفحه‌ها رو این‌جا بکش یا بزن تا انتخاب کنی"));
+  const send = async () => {
+    if (!(dr.page_link || dr.samples || dr.text || dr.files.length)) { toast("یکی از ورودی‌ها رو پر کن"); return; }
+    const ok = await post("/api/brief", {page_link: dr.page_link, samples: dr.samples, text: dr.text, files: dr.files});
+    if (ok) { UI.brief = {page_link: "", samples: "", text: "", files: []}; $("drawer")._sig = null; renderDrawer(); toast("ورودی برند رسید ✓ Claude از روش پروفایل برند رو کامل می‌کنه"); }
+  };
+  const saved = (b.page_link || (b.samples || []).length || b.text || (b.files || []).length) ? el("div", {class: "srcline"},
+    el("span", {class: "chip"}, ic("check"), b.read ? "Claude خونده" : "رسیده، منتظر Claude"),
+    b.page_link ? el("span", {class: "chip"}, ic("link"), b.page_link.replace(/^https?:\/\/(www\.)?/, "").slice(0, 40)) : null,
+    (b.samples || []).length ? el("span", {class: "chip"}, ic("play"), fa(b.samples.length) + " نمونه پست") : null,
+    b.text ? el("span", {class: "chip"}, ic("comment"), "توضیح متنی") : null,
+    ...(b.files || []).map(f => el("span", {class: "chip"}, ic("doc"), f.name))) : null;
+  return el("div", {class: "grp"},
+    el("h4", null, el("span", {class: "ic", html: ICONS.upload}), "ورودی‌های برند", el("small", {style: "font-weight:600;color:var(--faint);margin-inline-start:.4rem"}, "هر کدوم رو داری؛ لازم نیست همه‌ش")),
+    saved,
+    el("div", {class: "brief", style: "margin-top:.5rem"},
+      el("label", null, "لینک پیج اینستاگرام، کانال یوتیوب یا پیج لینکدین", inp("page_link", {type: "url", class: "ltr", placeholder: "https://www.instagram.com/brand/"})),
+      el("label", null, "نمونه پست‌ها (هر لینک یه خط)", inp("samples", {tag: "textarea", class: "ltr", placeholder: "https://www.instagram.com/reel/…\nhttps://www.youtube.com/shorts/…\nhttps://www.linkedin.com/posts/…"})),
+      el("label", {class: "full"}, "توضیح متنی (هدف، مخاطب، لحن، بایدها و نبایدها…)", inp("text", {tag: "textarea", placeholder: "مثلاً: برند لوازم کوهنوردیه، مخاطب ۲۵ تا ۴۰ ساله، لحن ماجراجو و مطمئن، اغراق نکنیم…"})),
+      el("div", {class: "full"}, drop, fileInput, list),
+      el("div", {class: "full actions"}, el("button", {class: "btn grad", onclick: send}, ic("check"), "ذخیره و ارسال برای Claude"))));
+}
+
+/* ---------- reel links sent from the dashboard ---------- */
+$("addReelBtn").addEventListener("click", () => { const f = $("addForm"); f.hidden = !f.hidden; if (!f.hidden) $("addUrl").focus(); });
+$("addForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const url = $("addUrl").value.trim(), note = $("addNote").value.trim();
+  if (!url) return;
+  const ok = await post("/api/inbox", {url, note: note || undefined});
+  if (ok) { $("addUrl").value = ""; $("addNote").value = ""; toast("لینک رسید ✓ Claude توی جستجوی بعدی می‌خونش"); }
+});
+const INBOX_FA = {new: "منتظر Claude", done: "بررسی شد", skipped: "کنار گذاشته شد"};
+function renderInbox(animate) {
+  const items = (D.inbox || []).slice().reverse().slice(0, 6);
+  keyed($("inboxBox"), items, i => i.id, i => i.status + i.url, i => el("div", {class: "inbox-item"}, ic("link"),
+    el("a", {href: safeLink(i.url) || "#", target: "_blank", rel: "noopener noreferrer", title: i.note || i.url}, i.url.replace(/^https:\/\/(www\.)?/, "")),
+    el("span", {class: "st2 " + i.status}, INBOX_FA[i.status] || i.status)), animate);
+}
+
+/* ---------- flow ---------- */
+const flowShown = {};
+function renderFlow() {
+  const ideas = D.board.ideas, T = tops(), scan = D.board.scan || {};
+  const qcDone = T.filter(i => i.qc), fitN = qcDone.filter(i => i.qc.verdict === "fit").length, badN = qcDone.filter(i => i.qc.verdict !== "fit").length;
+  const decided = T.filter(i => dec(i).status), appr = ideas.filter(approved);
+  const docs = appr.filter(i => i.preprod && i.storyboard), prod = ideas.filter(i => ["production", "done"].includes(stageOf(i)));
+  const steps = [
+    {icon: "user", lbl: "پیج رفرنس", val: (D.page.handle || D.page.name || hasStrategy(D.page)) ? "✓" : "—",
+     sub: D.page.handle || D.page.name || (hasStrategy(D.page) ? "سند استراتژی" : "ثبت نشده"), done: !!(D.page.handle || D.page.name || hasStrategy(D.page))},
+    {icon: "search", lbl: PL().unit + " بررسی‌شده", val: fa(scan.scanned || ideas.length), sub: ideas.length ? `${fa(ideas.length)} ایده نگه داشته شد` : "منتظر جستجو", done: !!ideas.length && !scanning()},
+    {icon: "star", lbl: "تاپ ۵", val: fa(T.length), sub: T.length ? "بالاترین امتیازها" : "—", done: T.length > 0},
+    {icon: "shield", lbl: "QC با پیج رفرنس", val: `${fa(qcDone.length)}/${fa(T.length || 5)}`, sub: qcDone.length ? `${fa(fitN)} مناسب · ${fa(badN)} با ایراد` : "—", done: T.length > 0 && qcDone.length === T.length},
+    {icon: "check", lbl: "تأیید کارفرما", val: fa(appr.length), sub: T.length ? `${fa(decided.length)} از ${fa(T.length)} تصمیم گرفته شد` : "—", done: T.length > 0 && decided.length === T.length},
+    {icon: "board", lbl: "پیش‌تولید و استوری‌بورد", val: fa(docs.length), sub: appr.length ? `از ${fa(appr.length)} ایده‌ی تأییدشده` : "—", done: appr.length > 0 && docs.length === appr.length},
+    {icon: "film", lbl: "در تولید", val: fa(prod.length), sub: prod.length ? "استوری‌بورد تأیید شد" : "—", done: prod.length > 0 && prod.length === appr.length}
+  ];
+  const cur = steps.findIndex(s => !s.done);
+  const box = $("flow");
+  if (!box.children.length) steps.forEach((s, i) => box.append(el("div", {class: "fs"}, el("span", {class: "n num"}, fa(i + 1)),
+    el("div", {class: "ic", html: ICONS[s.icon]}), el("div", {style: "min-width:0"}, el("div", {class: "lbl"}), el("div", {class: "val num"}), el("div", {class: "sub"})))));
+  steps.forEach((s, i) => {
+    const n = box.children[i];
+    n.classList.toggle("done", s.done);
+    n.classList.toggle("cur", i === cur && (i > 0 || !s.done));
+    n.querySelector(".lbl").textContent = s.lbl;
+    n.querySelector(".sub").textContent = s.sub;
+    const v = n.querySelector(".val");
+    if (v.textContent !== s.val) {
+      v.textContent = s.val;
+      if (flowShown[i] != null && L.ready && !reduced) { n.classList.remove("bump"); void n.offsetWidth; n.classList.add("bump"); }
+      flowShown[i] = s.val;
+    }
+  });
+}
+
+/* ---------- column A: 20 ideas ---------- */
+function buildRow(i, rank) {
+  const d = dec(i), q = i.qc;
+  const isTop = i.top && !scanning();
+  const row = el("div", {class: "row" + (isTop ? " top" : "") + (d.status === "deleted" ? " gone" : ""), title: i.summary || i.title || ""});
+  if (isTop) row.append(el("span", {class: "toptag"}, "TOP"));
+  if (q) row.append(el("span", {class: "vdot " + q.verdict, title: VERDICT[q.verdict][1]}));
+  const link = safeLink(i.url);
+  const thumb = thumbOf(i);
+  row.append(
+    el("div", {class: "rank num"}, fa(rank)),
+    link ? el("a", {href: link, target: "_blank", rel: "noopener noreferrer"}, thumb) : thumb,
+    el("div", {style: "min-width:0"},
+      el("div", {class: "rt"}, i.title || ""),
+      el("div", {class: "rs"}, platChip(i), ageChip(i), kindChip(i.kind)),
+      el("div", {class: "metrics num"},
+        el("span", {title: "بازدید"}, ic("eye"), num(i.views)), el("span", {title: MLBL(i).likes}, ic("heart"), num(i.likes)),
+        el("span", {title: "کامنت"}, ic("comment"), num(i.comments)), el("span", {title: i.shares == null ? NO_SHARE : MLBL(i).sharesLong}, ic("send"), num(i.shares)))),
+    el("div", {class: "score", title: "امتیاز نسبت به همین ۲۰ ایده"}, el("b", {class: "num"}, fa(i.score ?? 0)), el("div", {class: "sbar"}, el("span", {style: `width:${Math.max(3, i.score || 0)}%`})), el("small", null, "امتیاز")));
+  return row;
+}
+function renderIdeas(animate) {
+  const scan = D.board.scan || {};
+  const q = scan.queries || [];
+  keyed($("queries"), q.map((x, n) => ({x, last: n === q.length - 1})), o => o.x, o => o.x + (o.last && scanning()),
+    o => el("span", {class: "chip" + (o.last && scanning() ? " now" : "")}, ic("search"), o.x), animate);
+  const list = sortedIdeas();
+  document.querySelector("#p-scout .ph h2").textContent = `${fa(list.length || 20)} ایده‌ی پیدا شده`;
+  $("ideasSec").hidden = !list.length;
+  $("ideasCnt").textContent = fa(list.length);
+  keyed($("ideas"), list.map((i, n) => ({i, n: n + 1})), o => o.i.id,
+    o => JSON.stringify([o.n, o.i.title, o.i.score, o.i.views, o.i.likes, o.i.comments, o.i.shares, o.i.kind, o.i.thumb, o.i.top && !scanning(), (o.i.qc || {}).verdict, dec(o.i).status]),
+    o => buildRow(o.i, o.n), animate);
+  $("ideasEmpty").hidden = list.length > 0 || q.length > 0;
+}
+
+/* ---------- column B: QC ---------- */
+function verdictPill(q) {
+  if (!q) return el("span", {class: "verdict wait"}, ic("clock"), "در صف QC");
+  const [cls, label, icon] = VERDICT[q.verdict] || VERDICT.partial;
+  return el("span", {class: "verdict " + cls}, ic(icon), label);
+}
+function fitRing(q) {
+  if (!q || q.fit == null) return null;
+  const c = q.verdict === "fit" ? "var(--ok)" : q.verdict === "partial" ? "var(--warn)" : "var(--bad)";
+  return el("div", {class: "fitring", style: `--p:${Math.max(0, Math.min(100, q.fit))};--c:${c}`, title: "میزان تطابق با پیج رفرنس"}, el("b", {class: "num"}, fa(q.fit) + "٪"), el("small", null, "تطابق"));
+}
+function checkChips(q) {
+  return el("div", {class: "checks"}, (q.checks || []).map(c => {
+    const cls = c.ok === true ? "ok" : c.ok === "warn" ? "warn" : "bad";
+    return el("span", {class: "ck " + cls, title: c.note || ""}, ic(cls === "ok" ? "check" : cls === "warn" ? "warn" : "x"), c.area);
+  }));
+}
+function metricStrip(i) {
+  const dt = postedOf(i);
+  return el("div", {class: "mstrip num"},
+    [["eye", i.views, "بازدید"], ["heart", i.likes, MLBL(i).likes], ["comment", i.comments, "کامنت"], ["send", i.shares, MLBL(i).shares]].map(([icn, v, l]) =>
+      el("div", {class: "mbox", title: icn === "send" && v == null ? NO_SHARE : null}, ic(icn), el("div", null, el("b", null, num(v)), el("small", null, l)))),
+    el("div", {class: "mbox", title: dt ? "منتشر شده: " + dateFa.format(dt) : "تاریخ انتشار پیدا نشد"}, ic("clock"),
+      el("div", null, el("b", null, dt ? ageText(dt) : "—"), el("small", null, i.vpd ? num(i.vpd) + " بازدید در روز" : "زمان انتشار"))));
+}
+const READ_VIA = {page: "عددها از صفحه‌ی خود پست خونده شد ✓", grid: "بازدید از گرید پیج، بقیه از صفحه‌ی پست", screenshot: "عددها از اسکرین‌شات خونده شد",
+  search: "عددها از نتیجه‌ی جستجو (ممکنه ناقص یا قدیمی باشه)", user: "عددها رو کاربر داده (تأییدنشده)"};
+function readVia(i) { return i.read_via && READ_VIA[i.read_via] ? el("small", {class: "readvia", style: "display:block;margin-top:.3rem;color:var(--faint);font-size:.7rem"}, READ_VIA[i.read_via]) : null; }
+function whyBlock(i) {
+  const q = i.qc;
+  const bad = (q.checks || []).filter(c => c.ok !== true);
+  const visualBad = (q.checks || []).some(c => /بصری|visual/i.test(c.area) && c.ok !== true);
+  const showPal = (q.source_palette || []).length && (q.verdict !== "fit" || visualBad);
+  if (q.verdict === "fit" && !visualBad && !bad.length) return null;
+  const logic = q.logic || bad.filter(c => !/بصری|visual/i.test(c.area)).map(c => c.note ? `${c.area}: ${c.note}` : c.area).join(" · ") || "از نظر موضوع، مخاطب و لحن مشکلی نداره ✓";
+  const visual = q.visual || bad.filter(c => /بصری|visual/i.test(c.area)).map(c => c.note || c.area).join(" · ") || "از نظر ظاهر با پیج می‌خونه ✓";
+  const title = q.verdict === "fit" ? "نکته" : q.verdict === "partial" ? "چی باید عوض بشه" : "چرا مناسب نیست";
+  return el("div", null,
+    el("div", {class: "sec", style: "margin:0 0 .35rem"}, title),
+    el("div", {class: "why"},
+      el("div", null, el("h5", null, ic("brain"), "دلیل منطقی"), el("p", null, logic || "—")),
+      el("div", null, el("h5", null, ic("eye"), "دلیل بصری"), el("p", null, visual || "—"),
+        showPal ? el("div", {class: "palcmp"}, el("div", null, el("small", null, "رنگ‌های ایده"), swatches(q.source_palette)),
+          el("span", {class: "neq"}, q.verdict === "fit" ? "→" : "≠"), el("div", null, el("small", null, "رنگ‌های پیج"), swatches(q.page_palette || (D.page.visual || {}).palette))) : null)));
+}
+function altBlock(i) {
+  const a = alt(i);
+  if (!a) return null;
+  return el("div", {class: "altbox"}, el("span", {class: "sticker"}, "جایگزین پیشنهادی"),
+    el("div", {style: "display:flex;align-items:center;gap:.4rem;justify-content:space-between"}, el("b", null, a.title || ""), kindChip(a.kind || i.kind)),
+    a.hook ? el("div", {class: "hook"}, "هوک: " + a.hook) : null, a.why ? el("p", null, a.why) : null);
+}
+function decisionBar(i, inDrawer) {
+  const q = i.qc, d = dec(i), busy = UI.busy.has(i.id);
+  if (!q) return el("div", {class: "actions"}, el("span", {class: "status wait"}, ic("clock"), "اول QC، بعد تصمیم کارفرما"));
+  if (d.status) {
+    const map = {approved: ["ok", "check", "کارفرما تأیید کرد ← ایده‌های ساخت"], approved_alt: ["ok", "swap", "جایگزین تأیید شد ← ایده‌های ساخت"], deleted: ["del", "trash", "از ایده‌های ساخت حذف شد"]};
+    const [cls, icon, label] = map[d.status] || map.approved;
+    return el("div", {class: "actions"}, el("span", {class: "status " + cls}, ic(icon), label),
+      el("button", {class: "btn ghost", disabled: busy, onclick: () => decide(i, "restore")}, ic("undo"), "برگردون"),
+      d.status !== "deleted" && !inDrawer ? el("button", {class: "btn ghost", onclick: () => openDrawer(i.id, i.preprod ? "pre" : "qc")}, ic("doc"), "جزئیات") : null);
+  }
+  return el("div", {class: "actions"},
+    el("button", {class: "btn ok", disabled: busy, onclick: () => decide(i, "approve")}, ic("check"), q.verdict === "fit" ? "تأیید" : "تأیید همین"),
+    alt(i) ? el("button", {class: "btn alt", disabled: busy, onclick: () => decide(i, "approve_alt")}, ic("swap"), "تأیید جایگزین") : null,
+    el("button", {class: "btn del", disabled: busy, onclick: () => decide(i, "delete")}, ic("trash"), "حذف"),
+    inDrawer ? null : el("button", {class: "btn ghost", onclick: () => openDrawer(i.id, "qc"), style: "margin-inline-start:auto"}, ic("doc"), "جزئیات QC"));
+}
+function buildQC(i, rank) {
+  const q = i.qc, d = dec(i);
+  const checking = !q && Date.now() - L.active.qc < 6000 && L.now.qcId === i.id;
+  const card = el("article", {class: `qc v-${q ? q.verdict : "wait"} d-${d.status || "pending"}` + (checking ? " checking" : "")});
+  card.append(el("div", {class: "qh"},
+    el("div", {class: "qrank num"}, "#" + fa(rank)),
+    thumbOf(i),
+    el("div", {style: "min-width:0"}, el("div", {class: "qt"}, i.title || ""),
+      el("div", {class: "qs"}, platChip(i), ageChip(i), kindChip(i.kind), i.signal ? el("span", {class: "chip signal"}, i.signal) : null)),
+    el("div", {style: "display:flex;flex-direction:column;align-items:center;gap:.35rem"}, verdictPill(q), fitRing(q))));
+  card.append(metricStrip(i));
+  if (!q) {
+    card.append(el("div", {style: "display:flex;flex-direction:column;gap:.4rem"}, el("div", {class: "skel", style: "width:85%"}), el("div", {class: "skel", style: "width:60%"})));
+  } else {
+    card.append(checkChips(q));
+    const w = whyBlock(i);
+    if (w) card.append(w);
+    if (q.adapt) card.append(el("div", {class: "adapt"}, ic("check"), el("span", null, el("b", null, "تطبیق با پیج: "), q.adapt)));
+    const a = altBlock(i);
+    if (a) card.append(a);
+  }
+  card.append(decisionBar(i));
+  return card;
+}
+function renderQC(animate) {
+  const T = tops();
+  const who = (D.platform === "youtube" && ((D.page.youtube || {}).channel)) || (D.platform === "linkedin" && ((D.page.linkedin || {}).page)) || D.page.handle || D.page.name;
+  $("qcSub").textContent = who ? `آیا این ایده به درد ${who} می‌خوره؟ (${PL().name})` : "آیا این ایده به درد پیج رفرنس می‌خوره؟";
+  const nowQc = Date.now() - L.active.qc < 6000 ? L.now.qcId : null;
+  keyed($("qcList"), T.map((i, n) => ({i, n: n + 1})), o => o.i.id,
+    o => JSON.stringify([o.n, o.i.qc, o.i.kind, o.i.signal, o.i.views, dec(o.i).status, !!o.i.preprod, UI.busy.has(o.i.id), !o.i.qc && nowQc === o.i.id]),
+    o => buildQC(o.i, o.n), animate);
+  $("qcEmpty").hidden = T.length > 0;
+}
+
+/* ---------- column C: production board ---------- */
+const TRACK = [["approved", "تأیید"], ["preprod", "پیش‌تولید"], ["storyboard", "استوری‌بورد"], ["production", "تولید"]];
+const TRACK_IDX = {approved: 1, preprod: 2, storyboard: 3, production: 4, done: 5};
+function buildPC(i, rank) {
+  const st = stageOf(i), sb = sbd(i);
+  const idx = TRACK_IDX[st] ?? 0;
+  const waitSb = st === "storyboard" && sb.status !== "revise";
+  const card = el("div", {class: "pc" + (waitSb ? " wait-sb" : "") + (st === "production" || st === "done" ? " prod" : ""), onclick: () => openDrawer(i.id, i.storyboard ? "sb" : i.preprod ? "pre" : "qc")});
+  const track = el("div", {class: "track"}, el("span", {class: "fill", style: `width:${Math.min(idx - 1, 3) / 3 * 76}%`}),
+    TRACK.map(([k, l], n) => el("div", {class: "tk" + (n < idx ? " done" : "") + (n === idx && idx < 4 ? " cur" : "")}, el("i", {html: ICONS.check}), el("span", null, l))));
+  const btns = el("div", {class: "pc-b"},
+    el("span", {class: "mini" + (i.preprod ? " ready" : "")}, ic("doc"), i.preprod ? "سند پیش‌تولید ✓" : "پیش‌تولید…"),
+    el("span", {class: "mini" + (i.storyboard ? " ready" : "")}, ic("board"), i.storyboard ? `استوری‌بورد · ${fa((i.storyboard.frames || []).length)} فریم` : "استوری‌بورد…"),
+    waitSb ? el("span", {class: "mini need"}, ic("clock"), "منتظر تأیید استوری‌بورد") : null,
+    sb.status === "revise" ? el("span", {class: "mini need"}, ic("pencil"), "در حال اصلاح") : null,
+    st === "production" ? el("span", {class: "mini ok"}, ic("film"), "در تولید") : null,
+    st === "done" ? el("span", {class: "mini ok"}, ic("check"), "ساخته شد") : null);
+  card.append(el("div", {class: "pc-t"}, prodTitle(i)),
+    el("div", {class: "pc-o"}, usesAlt(i) ? el("span", {class: "tagalt"}, "جایگزین") : null, el("span", null, `از ایده‌ی #${fa(rank)} · ${i.source_page || ""}`)),
+    track, btns);
+  return card;
+}
+function renderProd(animate) {
+  const ranks = new Map(sortedIdeas().map((i, n) => [i.id, n + 1]));
+  const appr = D.board.ideas.filter(approved);
+  for (const [laneId, kind] of [["laneMotion", "motion"], ["laneFilmed", "filmed"]]) {
+    const lane = $(laneId);
+    const items = appr.filter(i => (prodKind(i) || "filmed") === kind);
+    lane.querySelector(".cnt").textContent = fa(items.length);
+    lane.hidden = !appr.length;
+    keyed(lane.querySelector(".lane-body"), items, i => i.id,
+      i => JSON.stringify([prodTitle(i), stageOf(i), sbd(i).status, !!i.preprod, (i.storyboard || {}).version, ranks.get(i.id)]),
+      i => buildPC(i, ranks.get(i.id)), animate);
+  }
+  $("prodEmpty").hidden = appr.length > 0;
+  const gone = D.board.ideas.filter(i => dec(i).status === "deleted");
+  $("goneList").hidden = !gone.length;
+  $("goneCnt").textContent = "(" + fa(gone.length) + ")";
+  keyed($("goneBody"), gone, i => i.id, i => i.title + UI.busy.has(i.id), i => el("div", {class: "gone-item"}, ic("trash"), el("span", null, i.title),
+    el("button", {class: "btn ghost", disabled: UI.busy.has(i.id), onclick: () => decide(i, "restore")}, ic("undo"), "برگردون")), false);
+}
+
+/* ---------- storyboard sketches ---------- */
+function shotArt(shot, pal, wide) {
+  const dk = color(pal[0], "#3B2A20"), md = color(pal[1], "#C8A27A"), lt = color(pal[2], "#F3E9DC"), ac = color(pal[3], "#6B8F71");
+  const st = `stroke="${dk}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
+  const fm = `fill="${md}" fill-opacity=".55"`;
+  const cup = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-12 -8h24v12a12 12 0 0 1-24 0z" ${fm} ${st.replace('fill="none"', "")}/><path d="M12 -4a5 5 0 0 1 0 10" ${st}/></g>`;
+  const G = {
+    closeup: `<path d="M8 72h66v30a33 33 0 0 1-66 0z" ${fm}/><path d="M8 72h66v30a33 33 0 0 1-66 0z" ${st}/><path d="M74 80a12 12 0 0 1 0 24" ${st}/><path d="M41 34q-7 11 0 16q7-5 0-16z" fill="${dk}"/><path d="M28 60q4-6 0-12M54 60q4-6 0-12" ${st} opacity=".6"/>`,
+    wide: `<path d="M0 116h90" ${st}/><rect x="8" y="88" width="74" height="28" rx="2" ${fm}/><rect x="8" y="88" width="74" height="28" rx="2" ${st}/><rect x="14" y="32" width="28" height="36" rx="2" ${st}/><path d="M28 32v36M14 50h28" ${st} opacity=".5"/><path d="M64 22v16" ${st}/><path d="M57 38h14l-3 7h-8z" fill="${ac}"/>${cup(26, 82, .5)}${cup(62, 82, .5)}`,
+    pov: `<rect x="18" y="26" width="54" height="84" rx="3" ${st}/><circle cx="62" cy="70" r="2.4" fill="${dk}"/><path d="M4 160l22-44q5-6 11-1l-9 45z" ${fm}/><path d="M4 160l22-44q5-6 11-1l-9 45" ${st}/><path d="M86 160l-22-44q-5-6-11-1l9 45z" ${fm}/><path d="M86 160l-22-44q-5-6-11-1l9 45" ${st}/>`,
+    topdown: `<circle cx="45" cy="80" r="32" fill="${lt}" stroke="${dk}" stroke-width="2"/><circle cx="45" cy="80" r="23" fill="${md}"/><circle cx="45" cy="80" r="23" ${st}/><path d="M45 92c-9-6-13-11-11-16 2-4 8-4 11 1 3-5 9-5 11-1 2 5-2 10-11 16z" fill="${lt}"/><rect x="66" y="76" width="12" height="8" rx="3" ${st}/>`,
+    text: `<rect x="12" y="58" width="66" height="11" rx="5.5" fill="${dk}"/><rect x="20" y="74" width="50" height="11" rx="5.5" fill="${dk}"/><path d="M26 94h38" stroke="${ac}" stroke-width="4" stroke-linecap="round"/><path d="M70 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="${ac}"/>`,
+    split: `<rect x="5" y="30" width="24" height="96" rx="4" ${st}/><rect x="33" y="30" width="24" height="96" rx="4" ${st}/><rect x="61" y="30" width="24" height="96" rx="4" ${st}/>${cup(17, 80, .55)}${cup(45, 80, .55)}${cup(73, 80, .55)}<path d="M9 112h16M37 112h16M65 112h16" ${st} opacity=".5"/>`,
+    product: `<path d="M4 112h82" ${st}/><ellipse cx="45" cy="110" rx="26" ry="5" ${fm}/><path d="M27 72h36v22a18 18 0 0 1-36 0z" fill="${lt}"/><path d="M27 72h36v22a18 18 0 0 1-36 0z" ${st}/><path d="M63 78a8 8 0 0 1 0 16" ${st}/><path d="M38 64q5-7 0-14M52 64q5-7 0-14" ${st} opacity=".6"/>`,
+    person: `<circle cx="45" cy="62" r="15" ${fm}/><circle cx="45" cy="62" r="15" ${st}/><path d="M15 128q30-48 60 0v6H15z" ${fm}/><path d="M15 128q30-48 60 0" ${st}/>`,
+    hands: `${cup(45, 76, 1.05)}<path d="M2 120q12-30 28-34l6 6q-10 10-14 30z" ${fm}/><path d="M2 120q12-30 28-34l6 6q-10 10-14 30" ${st}/><path d="M88 120q-12-30-28-34l-6 6q10 10 14 30z" ${fm}/><path d="M88 120q-12-30-28-34l-6 6q10 10 14 30" ${st}/>`,
+    infographic: `<path d="M12 116h66" ${st}/><rect x="18" y="86" width="12" height="30" rx="2" fill="${md}"/><rect x="39" y="66" width="12" height="50" rx="2" fill="${dk}"/><rect x="60" y="76" width="12" height="40" rx="2" fill="${ac}"/><circle cx="45" cy="44" r="10" ${st}/><path d="M41 44l3 3 5-6" ${st}/>`,
+    map: `<path d="M14 124c10-20 40-6 42-30s-26-18-18-40 30-18 36-22" ${st} stroke-dasharray="3 5"/><path d="M14 126c-6-8-6-13 0-17 6 4 6 9 0 17z" fill="${ac}"/><path d="M74 36c-6-8-6-13 0-17 6 4 6 9 0 17z" fill="${dk}"/>`,
+    screen: `<rect x="25" y="28" width="40" height="80" rx="7" fill="${lt}"/><rect x="25" y="28" width="40" height="80" rx="7" ${st}/><path d="M33 44h24M33 52h16M33 64h24M33 72h20" ${st} opacity=".6"/><circle cx="45" cy="100" r="2.5" fill="${dk}"/>`,
+    timelapse: `<circle cx="45" cy="78" r="27" fill="${lt}"/><circle cx="45" cy="78" r="27" ${st}/><path d="M45 78V60M45 78l12 8" ${st}/><path d="M18 48a36 36 0 0 1 14-10M72 48a36 36 0 0 0-14-10" ${st} opacity=".6"/><path d="M16 42l2 7 6-3" ${st} opacity=".6"/>`,
+    logo: `<circle cx="45" cy="76" r="24" fill="${dk}"/><path d="M34 66h22M45 66v22" stroke="${lt}" stroke-width="4" stroke-linecap="round"/><path d="M58 58l2 4 4 2-4 2-2 4-2-4-4-2 4-2z" fill="${ac}"/><rect x="26" y="108" width="38" height="6" rx="3" fill="${md}"/>`,
+    transition: `<path d="M-6 120C20 92 40 104 96 40" stroke="${md}" stroke-width="16" stroke-linecap="round" fill="none" opacity=".7"/><path d="M-6 140C30 110 56 120 96 70" ${st}/>`
+  };
+  const body = G[shot] || G.wide;
+  // 16:9 (long YouTube video): same drawing, a wider window around its centre, no Reels safe-zone lines
+  const vb = wide ? "-35 33 160 90" : "0 0 90 160";
+  const bg = wide ? `<rect x="-40" y="0" width="170" height="160" fill="${lt}"/>` : `<rect width="90" height="160" fill="${lt}"/>`;
+  const grid = `<g opacity=".09" stroke="${dk}">` + Array.from({length: 17}, (_, k) => `<path d="M${k * 10 - 35} 0v160"/>`).join("") + Array.from({length: 16}, (_, k) => `<path d="M-40 ${k * 10 + 5}h170"/>`).join("") + `</g>`;
+  const safe = wide ? "" : `<path d="M3 18.3h84M3 126.7h84" stroke="${dk}" stroke-width=".6" stroke-dasharray="2 2" opacity=".35"/>`;
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">` + bg + grid + body + safe + `</svg>`;
+}
+const SHOT_FA = {closeup: "کلوزآپ", wide: "نمای باز", pov: "POV", topdown: "نمای بالا", text: "تیتر", split: "تقسیم صفحه", product: "محصول", person: "آدم",
+  hands: "دست‌ها", infographic: "اینفوگرافیک", map: "نقشه", screen: "صفحه‌ی گوشی", timelapse: "تایم‌لپس", logo: "لوگو", transition: "ترنزیشن"};
+
+/* ---------- drawer ---------- */
+function openDrawer(id, tab) { UI.open = id; UI.tab = tab || "qc"; UI.note = ""; $("drawer")._sig = null; renderDrawer(); $("overlay").hidden = false; }
+function closeDrawer() { UI.open = null; $("overlay").hidden = true; $("drawer").replaceChildren(); }
+$("overlay").addEventListener("click", e => { if (e.target.id === "overlay") closeDrawer(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && UI.open) closeDrawer(); });
+
+function paneQC(i) {
+  const q = i.qc;
+  if (!q) return waitBox("shield", "QC این ایده هنوز انجام نشده. Claude انجامش می‌ده.");
+  const rows = (q.checks || []).map(c => {
+    const cls = c.ok === true ? "ok" : c.ok === "warn" ? "warn" : "bad";
+    return el("li", null, el("span", {class: "ck " + cls, style: "cursor:default"}, ic(cls === "ok" ? "check" : cls === "warn" ? "warn" : "x"), c.area), el("span", {style: "font-size:.82rem"}, c.note || ""));
+  });
+  return el("div", {class: "pane"},
+    el("div", {style: "display:flex;gap:1rem;align-items:center;flex-wrap:wrap"}, verdictPill(q), fitRing(q), el("div", {style: "flex:1;min-width:16rem"}, metricStrip(i), readVia(i))),
+    i.summary ? el("div", {class: "adapt"}, ic("play"), el("span", null, el("b", null, ((PLATS[i.platform] || PL()).unit) + " منبع: "), i.summary, i.hook ? ` — هوک: «${i.hook}»` : "")) : null,
+    el("ul", {class: "timeline", style: "gap:.45rem"}, rows.map(r => { r.style.cssText = "display:flex;gap:.6rem;align-items:center;justify-content:flex-start;padding:.45rem .6rem;border-radius:.6rem;background:var(--panel-hi);list-style:none"; return r; })),
+    whyBlock(i), q.adapt ? el("div", {class: "adapt"}, ic("check"), el("span", null, el("b", null, "تطبیق با پیج: "), q.adapt)) : null, altBlock(i),
+    el("div", {class: "kv num"},
+      el("div", null, el("small", null, "نرخ تعامل وزن‌دار"), el("b", null, pct(i.er))), el("div", null, el("small", null, "نرخ اشتراک"), el("b", null, pct(i.share_rate))),
+      el("div", null, el("small", null, "بازدید نسبت به فالوئر پیج منبع"), el("b", null, i.reach != null ? "×" + nf1.format(i.reach) : "—")),
+      el("div", null, el("small", null, "امتیاز در این دسته"), el("b", null, fa(i.score ?? 0) + " از ۱۰۰"))));
+}
+function waitBox(icon, text) {
+  return el("div", {class: "pane"}, el("div", {class: "wait-box"}, el("div", {class: "ic", html: ICONS[icon]}), el("div", null, text), el("div", {class: "skel"})));
+}
+const GROUPS = [["people", "آدم‌ها", "user"], ["location", "لوکیشن", "pin"], ["equipment", "تجهیزات", "camera"], ["props", "وسایل صحنه", "box"], ["software", "نرم‌افزار و ابزار AI", "laptop"], ["assets", "فایل‌ها و المان‌ها", "folder"]];
+function panePre(i) {
+  const p = i.preprod;
+  if (!approved(i) && !p) return waitBox("doc", "سند پیش‌تولید بعد از تأیید کارفرما ساخته می‌شه.");
+  if (!p) return waitBox("doc", "Claude سند پیش‌تولید رو آماده می‌کنه.");
+  const kind = p.kind || prodKind(i);
+  return el("div", {class: "pane"},
+    p.summary ? el("div", {class: "adapt", style: "font-size:.9rem;color:var(--ink)"}, ic("doc"), el("span", null, p.summary)) : null,
+    el("div", {class: "kv"},
+      el("div", null, el("small", null, "دسته"), el("b", null, KIND_FA[kind] || "—")), el("div", null, el("small", null, "قالب"), el("b", null, p.format || "—")),
+      el("div", null, el("small", null, "زمان کل"), el("b", null, p.time || "—")), el("div", null, el("small", null, "هزینه"), el("b", null, p.budget || "—"))),
+    p.hook ? el("div", {class: "altbox", style: "border-style:solid"}, el("span", {class: "sticker"}, "هوک"), el("b", null, p.hook)) : null,
+    el("div", {class: "legend"}, el("span", null, el("span", {class: "st have", style: "width:.9rem;height:.9rem;border-radius:.25rem;display:inline-grid;place-items:center;background:var(--ok)"}), "داریم"),
+      el("span", null, el("span", {style: "width:.9rem;height:.9rem;border-radius:.25rem;display:inline-block;border:1.5px solid var(--label)"}), "باید تهیه بشه")),
+    el("div", {class: "groups"}, GROUPS.filter(([k]) => (p[k] || []).length).map(([k, label, icon]) =>
+      el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS[icon]}), label),
+        el("ul", null, p[k].map(x => el("li", null, el("span", {class: "st" + (x.have === true ? " have" : x.have === false ? " need" : ""), html: x.have === true ? ICONS.check : ""}),
+          el("div", null, x.name, x.note ? el("small", null, x.note) : null))))))),
+    el("div", {class: "two"},
+      (p.schedule || []).length ? el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS.clock}), "برنامه‌ی کار"),
+        el("ol", {class: "timeline"}, p.schedule.map(s => el("li", null, el("span", null, s.step || ""), el("b", null, s.time || ""))))) : null,
+      (p.checklist || []).length ? el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS.check}), "چک‌لیست پیش از ساخت"), el("ul", {class: "bul"}, p.checklist.map(x => el("li", null, x)))) : null,
+      (p.risks || []).length ? el("div", {class: "grp"}, el("h4", null, el("span", {class: "ic", html: ICONS.warn}), "ریسک و راه‌حل"), el("ul", {class: "bul"}, p.risks.map(x => el("li", null, x)))) : null));
+}
+function paneSB(i) {
+  const sb = i.storyboard;
+  if (!approved(i) && !sb) return waitBox("board", "استوری‌بورد بعد از تأیید کارفرما طراحی می‌شه.");
+  if (!sb) return waitBox("board", "Claude استوری‌بورد رو طراحی می‌کنه.");
+  const pal = (sb.palette && sb.palette.length ? sb.palette : null) || (D.page.visual || {}).palette || [];
+  const frames = sb.frames || [];
+  const wide = i.format === "long";
+  const rev = sbd(i).status === "revise";
+  return el("div", {class: "pane"},
+    el("div", {class: "sbmeta"},
+      el("span", {class: "chip"}, ic("film"), `${fa(frames.length)} فریم`), sb.duration ? el("span", {class: "chip num"}, ic("clock"), `${fa(Math.round(sb.duration))} ثانیه`) : null,
+      el("span", {class: "chip"}, wide ? (i.platform === "linkedin" ? "ویدیوی افقی ۱۶:۹" : "ویدیوی بلند ۱۶:۹") : (i.platform === "youtube" ? "Shorts ۹:۱۶" : i.platform === "linkedin" ? "ویدیوی لینکدین ۹:۱۶" : "ریل ۹:۱۶")),
+      el("span", {class: "chip num"}, "نسخه‌ی " + fa(sb.version || 1)), sb.style ? el("span", {class: "chip"}, ic("palette"), sb.style) : null, sb.music ? el("span", {class: "chip"}, "♪ " + sb.music) : null),
+    el("div", {class: "strip"}, frames.map(f => {
+      const src = safeImg(f.sketch);
+      return el("div", {class: "frame" + (wide ? " wide" : "")},
+        el("div", {class: "canvas"}, src ? el("img", {src, alt: ""}) : el("div", {html: shotArt(f.shot, pal, wide), style: "position:absolute;inset:0"}),
+          el("span", {class: "fno num"}, fa(f.n)), f.time ? el("span", {class: "ftime num"}, f.time) : null,
+          f.text ? el("div", {class: "ftext"}, f.text) : null, el("span", {class: "fshot"}, SHOT_FA[f.shot] || f.shot || ""),
+          el("span", {class: "wm"}, "© tarfandhaye.ai")),
+        el("div", {class: "fd"}, el("div", {class: "vis"}, f.visual || ""), f.vo ? el("q", {class: "vo"}, f.vo) : null,
+          el("div", {class: "row2"}, f.camera ? el("span", null, "🎥 " + f.camera) : null, f.sfx ? el("span", null, "🔊 " + f.sfx) : null, f.transition ? el("span", null, "↪ " + f.transition) : null)));
+    })),
+    sb.caption ? el("div", {class: "adapt"}, ic("comment"), el("span", null, el("b", null, "کپشن پیشنهادی: "), sb.caption)) : null);
+}
+function sbFooter(i) {
+  const sb = i.storyboard, d = sbd(i), busy = UI.busy.has(i.id);
+  if (!sb || !approved(i)) return null;
+  const f = el("div", {class: "df"});
+  if (d.status === "approved") {
+    f.append(el("span", {class: "status ok"}, ic("film"), "استوری‌بورد تأیید شد ← مرحله‌ی تولید"),
+      el("button", {class: "btn ghost", disabled: busy, onclick: () => storyboard(i, "reset")}, ic("undo"), "برداشتن تأیید"));
+  } else if (d.status === "revise") {
+    f.append(el("span", {class: "status warn"}, ic("pencil"), "منتظر نسخه‌ی اصلاح‌شده"), d.note ? el("span", {style: "font-size:.8rem;color:var(--muted)"}, "یادداشت: " + d.note) : null,
+      el("button", {class: "btn ghost", disabled: busy, onclick: () => storyboard(i, "reset")}, ic("undo"), "لغو"));
+  } else {
+    const ta = el("textarea", {placeholder: "یادداشت کارفرما برای اصلاح (اختیاری)…", oninput: e => UI.note = e.target.value});
+    ta.value = UI.note;
+    f.append(ta,
+      el("button", {class: "btn del", disabled: busy, onclick: () => storyboard(i, "revise", UI.note)}, ic("pencil"), "نیاز به اصلاح"),
+      el("button", {class: "btn grad", disabled: busy, onclick: () => storyboard(i, "approve")}, ic("check"), "تأیید استوری‌بورد ← تولید"));
+  }
+  return f;
+}
+function renderDrawer() {
+  const box = $("drawer");
+  if (UI.open === "@brand" || UI.open === "@newbrand" || UI.open === "@bench") {
+    const isBench = UI.open === "@bench";
+    const s = JSON.stringify([UI.open, D.page, D.mode, D.brief, UI.open === "@newbrand" ? D.brands : 0, isBench ? [D.benchmarks, D.brand] : 0]);
+    if (box._sig === s) return;
+    box._sig = s;
+    const isBrand = UI.open === "@brand", isNew = UI.open === "@newbrand";
+    box.replaceChildren(
+      el("div", {class: "dh"}, el("div", {class: "ic", style: "width:2.6rem;height:2.6rem;border-radius:.8rem;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:1.3rem", html: ICONS[isBench ? "search" : isNew ? "box" : "target"]}),
+        el("div", {style: "min-width:0;flex:1"}, el("h3", null, isBench ? (UI.bench && UI.bench.lock ? "بنچ‌مارک " + PLATS[UI.bench.lock].name : "بنچ‌مارک جدید") : isNew ? "برندها" : "پیج رفرنس و استراتژی برند"),
+          el("p", null, isBench ? "بازه‌ی زمانی و پیج‌های مرجع رو انتخاب کن و جستجو رو شروع کن" : isNew ? "هر برند یا پیج جدا بررسی می‌شه؛ بنچ‌مارک هر کدوم با دکمه‌ی خودش" : [activeBrandName(), D.page.handle, D.page.niche].filter(Boolean).join(" · "))),
+        isBrand ? el("button", {class: "btn ghost", onclick: () => window.print(), title: "چاپ یا ذخیره به PDF"}, ic("print"), "چاپ / PDF") : null,
+        el("button", {class: "x", onclick: closeDrawer, "aria-label": "بستن", html: ICONS.x})),
+      el("div", {class: "db"}, isBench ? paneBench() : isNew ? paneBrands() : paneBrand()),
+      el("div", {class: "dcopy"}, el("span", {class: "copy"}, "© tarfandhaye.ai"), el("span", null, "Social Idea Lab by Tarfandhaye.ai — همه‌ی حقوق محفوظ است")));
+    return;
+  }
+  const i = UI.open && D.board.ideas.find(x => x.id === UI.open);
+  if (!i) { if (UI.open) closeDrawer(); return; }
+  const s = JSON.stringify([UI.tab, i, dec(i), sbd(i), UI.busy.has(i.id), D.page, (D.brief || {}).text]);
+  if (box._sig === s) return;
+  const keepScroll = box._sig && box.querySelector(".db") ? box.querySelector(".db").scrollTop : 0;
+  box._sig = s;
+  const rank = sortedIdeas().findIndex(x => x.id === i.id) + 1;
+  const tab = (key, label, icon, ready) => el("button", {class: "tab" + (UI.tab === key ? " on" : ""), onclick: () => { UI.tab = key; box._sig = null; renderDrawer(); }},
+    ic(icon), label, ready == null ? null : el("span", {class: "badge" + (ready ? "" : " wait")}, ready ? "آماده" : "…"));
+  const panes = {qc: paneQC(i), pre: panePre(i), sb: paneSB(i)};
+  for (const [k, p] of Object.entries(panes)) { p.hidden = k !== UI.tab; p.dataset.pane = k; }
+  // the client decides from the drawer too: needed for ideas outside the top 5 that got a QC
+  const footer = UI.tab === "sb" ? sbFooter(i) : UI.tab === "qc" && i.qc ? el("div", {class: "df"}, decisionBar(i, true)) : null;
+  box.replaceChildren(...[
+    el("div", {class: "dh"}, thumbOf(i),
+      el("div", {style: "min-width:0;flex:1"}, el("h3", null, prodTitle(i)),
+        el("p", null, usesAlt(i) ? `جایگزینِ ایده‌ی #${fa(rank)}: «${i.title}» — ` : `ایده‌ی #${fa(rank)} — `, i.source_page || "", " · ", KIND_FA[prodKind(i)] || "")),
+      kindChip(prodKind(i)),
+      el("button", {class: "btn ghost", onclick: () => window.print(), title: "چاپ یا ذخیره به PDF"}, ic("print"), "چاپ / PDF"),
+      el("button", {class: "x", onclick: closeDrawer, "aria-label": "بستن", html: ICONS.x})),
+    el("div", {class: "tabs"}, tab("qc", "QC", "shield"), tab("pre", "سند پیش‌تولید", "doc", approved(i) ? !!i.preprod : null), tab("sb", "استوری‌بورد", "board", approved(i) ? !!i.storyboard : null)),
+    el("div", {class: "db"}, Object.values(panes)),
+    footer,
+    el("div", {class: "dcopy"}, el("span", {class: "copy"}, "© tarfandhaye.ai"), el("span", null, "Social Idea Lab by Tarfandhaye.ai — همه‌ی حقوق محفوظ است"))].filter(Boolean));
+  box.querySelector(".db").scrollTop = keepScroll;
+}
+
+/* ---------- actions ---------- */
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600);
+}
+async function post(path, body) {
+  UI.busy.add(body.id); renderAll(false);
+  try {
+    const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || r.status);
+    UI.busy.delete(body.id);
+    applyState(j.state);
+    return j;
+  } catch (e) {
+    UI.busy.delete(body.id); renderAll(false);
+    toast("ثبت نشد: " + e.message);
+    return false;
+  }
+}
+async function decide(i, action) {
+  const ok = await post("/api/decide", {id: i.id, action});
+  if (ok) toast({approve: "تأیید شد ✓ رفت توی ایده‌های ساخت", approve_alt: "جایگزین تأیید شد ✓", delete: "از ایده‌های ساخت حذف شد (قابل برگشت)", restore: "برگشت به صف تصمیم"}[action]);
+}
+async function storyboard(i, action, note) {
+  const ok = await post("/api/storyboard", {id: i.id, action, note: note || undefined});
+  if (ok) { UI.note = ""; toast({approve: "استوری‌بورد تأیید شد ← تولید 🎬", revise: "درخواست اصلاح ثبت شد", reset: "تصمیم برداشته شد"}[action]); }
+}
+
+/* ---------- log ---------- */
+const AGENT_FA = {page: "پیج", scout: "جستجو", qc: "QC", client: "کارفرما", prod: "تولید", system: "سیستم"};
+function renderLog(animate) {
+  keyed($("log"), L.log.slice(0, 5), e => e.i, e => e.i, e => el("li", null, el("time", {class: "num"}, timeFmt.format(new Date(e.t * 1000))),
+    el("span", {class: "tag " + e.agent}, AGENT_FA[e.agent] || e.agent), el("span", null, e.msg || e.type)), animate);
+}
+
+/* ---------- loop ---------- */
+function renderAll(animate) {
+  renderMode(); renderPlatform(); renderBrands(); renderPage(); renderFlow(); renderIdeas(animate); renderInbox(animate); renderQC(animate); renderProd(animate);
+  if (UI.open) renderDrawer();
+  $("demo").hidden = !D.demo;
+}
+function applyState(j) {
+  if (!j || j.same) return;
+  D.rev = j.rev; D.page = j.page || {}; D.board = j.board || {ideas: [], scan: {}}; D.decisions = j.decisions || {ideas: {}, storyboards: {}}; D.demo = !!j.demo;
+  D.inbox = j.inbox || [];
+  const brandChanged = D.brand !== undefined && (j.brand || "") !== D.brand;
+  D.brands = j.brands || []; D.benchmark = j.benchmark || {}; D.benchmarks = j.benchmarks || {};
+  if (brandChanged) { L.next = 0; L.log = []; $("log")._nodes = null; $("log").replaceChildren(); L.brand = j.brand || ""; }
+  D.brand = j.brand || "";
+  if (brandChanged || (D.platform && j.platform && D.platform !== j.platform)) {   // switched: the other lists are new, don't animate old keys
+    for (const id of ["ideas", "qcList", "queries"]) { const b = $(id); b._nodes = null; b.replaceChildren(); }
+    document.querySelectorAll(".lane-body").forEach(b => { b._nodes = null; b.replaceChildren(); });
+  }
+  D.platform = j.platform || "instagram"; D.platforms = j.platforms || {};
+  D.mode = j.mode || "strategy"; D.brief = j.brief || {};
+  D.board.ideas = D.board.ideas || [];
+  renderAll(UI.loaded);
+  const want = params.get("open");   // deep link: ?open=i01&tab=sb · ?open=@brand
+  if (!UI.loaded && want && (want === "@brand" || D.board.ideas.some(x => x.id === want)))
+    openDrawer(want, ({qc: "qc", pre: "pre", sb: "sb"})[params.get("tab")] || "qc");
+  UI.loaded = true;
+}
+function setLive(ok) {
+  $("live").classList.toggle("off", !ok);
+  $("liveText").textContent = ok ? "زنده" : "قطع اتصال";
+  $("offline").hidden = ok || UI.loaded;
+}
+async function pollState() {
+  try {
+    const r = await fetch("/api/state?rev=" + encodeURIComponent(D.rev), {cache: "no-store"});
+    if (!r.ok) throw new Error(r.status);
+    applyState(await r.json());
+    setLive(true);
+  } catch (e) { setLive(false); }
+  finally { setTimeout(pollState, 1000); }
+}
+async function pollEvents() {
+  try {
+    const r = await fetch("/api/events?since=" + L.next, {cache: "no-store"});
+    const j = await r.json();
+    if ((j.brand || "") !== (L.brand || "")) {   // another brand is active now: its own log, from the start
+      L.brand = j.brand || ""; L.next = 0; L.log = []; $("log")._nodes = null; $("log").replaceChildren();
+      return;   // the finally below polls again at once with since=0
+    }
+    if (j.next < L.next) { L.next = 0; L.log = []; }
+    for (const ev of j.events) {
+      if (L.ready && ev.agent in L.active) {
+        L.active[ev.agent] = Date.now();
+        L.now[ev.agent] = ev.msg;
+        if (ev.agent === "qc") L.now.qcId = (ev.data || {}).id;
+      }
+      if (ev.demo) D.demo = true;
+      L.log.unshift(ev);
+    }
+    L.log = L.log.slice(0, 30);
+    L.next = j.next;
+    if (j.events.length) { renderLog(L.ready); if (L.ready) renderQC(true); }
+    L.ready = true;
+  } catch (e) { /* the state poll shows the offline badge */ }
+  finally { setTimeout(pollEvents, 900); }
+}
+const PANEL_AGENTS = {"p-scout": ["scout"], "p-qc": ["qc", "client"], "p-prod": ["prod"]};
+function tick() {
+  const now = Date.now();
+  for (const [pid, agents] of Object.entries(PANEL_AGENTS)) {
+    const a = agents.reduce((best, x) => L.active[x] > (L.active[best] || 0) ? x : best, agents[0]);
+    const on = now - (L.active[a] || 0) < 6000;
+    const panel = $(pid);
+    panel.classList.toggle("active", on);
+    panel.querySelector(".agent-text").textContent = on ? (a === "client" ? "کارفرما تصمیم گرفت" : "Claude در حال کار…") : "آماده";
+    const line = panel.querySelector(".nowline");
+    line.hidden = !on || !L.now[a];
+    if (on) line.textContent = L.now[a] || "";
+  }
+  $("refpage").classList.toggle("active", now - L.active.page < 6000);
+  $("clock").textContent = timeFmt.format(new Date());
+}
+
+if (location.protocol === "file:") { setLive(false); $("offline").hidden = false; }
+else { pollState(); pollEvents(); }
+tick(); setInterval(tick, 500);
+})();
+</script>
+</body>
+</html>
