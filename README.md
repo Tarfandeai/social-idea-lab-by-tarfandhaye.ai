@@ -1,6 +1,6 @@
 # Social Idea Lab by Tarfandhaye.ai
 
-ساخته‌ی پیج **[@tarfandhaye.ai](https://www.instagram.com/tarfandhaye.ai/)** · کانال تلگرام: [t.me/tarfandhaye_ai](https://t.me/tarfandhaye_ai)
+ساخته‌ی **Tarfandhaye.ai** · اینستاگرام: [instagram.com/tarfandhaye.ai](https://www.instagram.com/tarfandhaye.ai/) · کانال تلگرام: [t.me/tarfandhaye_ai](https://t.me/tarfandhaye_ai)
 
 اسکیل Claude Code برای پیدا کردن ایده‌ی ویدیو. برای هر برند، ریل‌ها و ویدیوهای پربازدید هم‌موضوع رو توی **اینستاگرام، یوتیوب یا لینکدین** پیدا می‌کنه، امتیاز می‌ده، می‌گه کدومشون به برند تو می‌خوره، و برای ایده‌ی انتخابی‌ت سند پیش‌تولید و استوری‌بورد می‌سازه.
 

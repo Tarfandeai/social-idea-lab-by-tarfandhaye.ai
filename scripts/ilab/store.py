@@ -11,7 +11,7 @@ from pathlib import Path
 
 from . import brand as _brand
 
-BRAND_SHA256 = "167b8cea0cad5eac7a58483e0be31476b5890a77d1fd3aa22982d46285fe0722"  # set by dev/build.py
+BRAND_SHA256 = "193414c9b7e51815c4c795077d78a0174d824e3fe4cea2e081ce23c65ca4794e"  # set by dev/build.py
 if BRAND_SHA256 and (not _brand.LICENSE_SHA256 or _brand.code_digest(Path(__file__).with_name("brand.py")) != BRAND_SHA256):
     raise SystemExit(f"⛔ {_brand.NAME}: فایل‌های اسکیل تغییر کرده‌اند، پس اسکیل اجرا نمی‌شود. نسخه‌ی اصل را از {_brand.OWNER} بگیرید.")
 _brand.check()
